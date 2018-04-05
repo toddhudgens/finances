@@ -27,6 +27,7 @@ printf "4. Running composer\n"
 cd www
 composer install
 cd ../
+printf "[DONE]\n\n"
 
 printf "5. Create your login user\n"
 read -p "Username: " username
