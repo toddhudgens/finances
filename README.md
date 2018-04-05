@@ -13,16 +13,21 @@ A PHP/Apache/Mysql webapp used to manage personal finances
 
 3. If you have a Github account, clone the project
   > git clone https://github.com/toddhugens/my-financials
+  
   > cd my-financials
 
 4. If you don't have a Github account, download the project
   > wget https://github.com/toddhudgens/my-financials/archive/master.zip
+  
   > unzip master.zip
+  
   > mv my-finacials-master my-financials
+  
   > cd my-financials
   
 5. Run the install.sh script
   > chmod +x install.sh
+  
   > ./install.sh
 
 6. In your apache config, point the DocumentRoot directive to the www/ folder in the project. Restart apache and browse to the site you just configured. It should be working!
