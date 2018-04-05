@@ -27,6 +27,7 @@ printf "4. Running composer\n"
 cd www
 composer install
 cd ../
+printf "[DONE]\n\n"
 
 printf "5. Create your login user\n"
 read -p "Username: " username
@@ -44,7 +45,7 @@ mysql --login-path=local -e "INSERT INTO my_financials.users VALUES(0,\"$usernam
 printf "\n6. Create an AlphaVanta API key (optional)\n"
 printf "  - If you want to use the stock / mutual fund features, you'll need an API key to get pricing data\n"
 printf "  - Sign up for an API key at https://www.alphavantage.co/support/\n\n"
-read -p "API KEY: [hit enter to skip]" alphavantageapikey
+read -p "API KEY [hit enter to skip]: " alphavantageapikey
 sed -i "/SetEnv ALPHA_VANTAGE_API_KEY/c\SetEnv ALPHA_VANTAGE_API_KEY \"$alphavantageapikey\"" www/.htaccess
 printf "[DONE]\n\n"
 
