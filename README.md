@@ -18,10 +18,4 @@ A PHP/Apache/Mysql webapp used to manage personal finances
   * chmod +x install.sh
   * ./install.sh
 
-5. In your apache config, point the DocumentRoot directive to the www/ folder in the project, 
-
-6. Now you should be able to browse back to the starting page, and you should see a login screen. 
-
-7. Login with the username and password you just created, and create your first account.
-
-8. You're now ready to start tracking your finances! 
+5. In your apache config, point the DocumentRoot directive to the www/ folder in the project. Restart apache and browse to the site you just configured. It should be working!
