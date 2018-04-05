@@ -1,17 +1,24 @@
 # finances
-PHP/Mysql webapp used to manage personal finances
+PHP/Apache/Mysql webapp used to manage personal finances
 
 ## Install process
 
-1. Place the checked-out code into the desired webroot folder. This could be /var/www or /var/www/htdoc, or something else if you are using a vhost setup. I like to setup individual vhosts for each site on my webserver and place them all under /sites/.
+1. Install the dependencies
+..* sudo apt-get install apache2 libapache2-mod-php7.1 php7.1-curl php7.1-mysql composer mysql-client-core-5.7 mysql-server-5.7
 
-2. Browse to the default page (http://yourdomain.com/). You should see a welcome screen.
+2. Enable mod_rewrite
+..* sudo a2enmod rewrite
+..* sudo systemctl restart apache2
 
-3. Follow the install process to setup the database tables and database users. 
+3. Download the project from Github
+..* git clone https://github.com/toddhugens/my-financials
+..* cd my-financials
 
-4. Continue through the install process, and setup your user account.
+4. Run the install.sh script
+..* chmod +x install.sh
+..* ./install.sh
 
-5. Once complete, delete install.php, and set the file mode on the config file to 400:  $ chmod 400 conf/config.php
+5. In your apache config, point the DocumentRoot directive to the www/ folder in the project, 
 
 6. Now you should be able to browse back to the starting page, and you should see a login screen. 
 
