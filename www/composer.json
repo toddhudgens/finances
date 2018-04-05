@@ -1,0 +1,19 @@
+{
+    "name": "thudgens/finances",
+    "description": "PHP Web App for Personal Finances",
+    "type": "project",
+    "license": "GNU GPL v3",
+    "authors": [
+        {
+            "name": "Todd Hudgens",
+            "email": "todd.hudgens@gmail.com"
+        }
+    ],
+    "require": {
+        "components/jquery": "^3.2",
+        "softcommerce/jquery-flot": "^1.0",
+        "components/jqueryui": "^1.12",
+        "curl/curl": "^1.8",
+        "twig/twig": "^1.35"
+    }
+}
