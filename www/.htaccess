@@ -1,0 +1,12 @@
+# DENY-HTTP-BEGIN
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^?]*)$ /index.php?path=$1 [NC,L,QSA]
+
+php_value output_handler ob_gzhandler
+
+SetEnv PDOCONNSTR "mysql:host=localhost;dbname=my_financials"
+SetEnv DBUN "myfinancials"
+SetEnv DBPW ""
+SetEnv ALPHA_VANTAGE_API_KEY ""
