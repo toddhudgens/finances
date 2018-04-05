@@ -10,9 +10,14 @@ A PHP/Apache/Mysql webapp used to manage personal finances
   * sudo a2enmod rewrite
   * sudo systemctl restart apache2
 
-3. Download the project from Github
+3. Download or clone the project from Github
+  * wget https://github.com/toddhudgens/my-financials/archive/master.zip
+  * unzip master.zip
+  * mv my-finacials-master my-financials
+  * cd my-financials
+  * -- OR --
   * git clone https://github.com/toddhugens/my-financials
-  *  cd my-financials
+  * cd my-financials
 
 4. Run the install.sh script
   * chmod +x install.sh
