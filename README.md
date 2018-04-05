@@ -30,4 +30,6 @@ A PHP/Apache/Mysql webapp used to manage personal finances
   
   > ./install.sh
 
-6. In your apache config, point the DocumentRoot directive to the www/ folder in the project. Ensure that directive "AllowOverride" is set to "All". Restart apache and browse to the site you just configured. It should be working!
+6. In your apache config, point the DocumentRoot directive to the www/ folder in the project. Ensure that directive "AllowOverride" is set to "All". 
+
+7. Restart apache and browse to the site you just configured. It should be working!
