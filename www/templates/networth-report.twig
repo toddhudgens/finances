@@ -1,0 +1,10 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+From: <input id="from" class="dateInput" type="text" onchange="updateDateRangeFrom()" value="{{ from }}">&nbsp; &nbsp;
+To: <input id="to" class="dateInput" type="text" onchange="updateDateRangeTo()" value="{{ to }}">
+<br><br>
+<script type="text/javascript">
+window.networthLog = {{(networthLog|json_encode|raw)}};
+</script>
+<div id="fullScreenChart"></div>

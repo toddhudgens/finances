@@ -1,0 +1,117 @@
+<h1>{{ pageTitle }}</h1>
+<a href="javascript:showNewAccountForm()" class="addNewAccount"><img style="vertical-align:middle" src="/images/add.png">&nbsp; Add New Account</a>
+{% include 'add-account-dialog.twig' %}
+<div id="transactionSearch" style="margin-left:554px;margin-top:-20px; position:absolute;">
+<input type="text" id="searchText">&nbsp;<input type="button" value="Search" onclick="transactionSearch()">
+</div><br><br>
+<table><tr><td>
+<div id="leftSide" style="width:400px;">
+{% for id,name in accountTypes %}
+{% if accounts[name]|length > 0 %}
+<table class="accountTbl">
+<tr><th colspan="2">{{ name }}</th></tr>
+{% set runningTotal = 0 %}
+{% for aId, aInfo in accounts[name] %}
+<tr class="{% if aId is odd %}odd{% endif %}">
+ <td class="accountName" onmouseover="showAccountActions({{ aInfo.id }})" onmouseout="hideAccountActions({{ aInfo.id }})">
+ <input type="hidden" id="accountName{{ aInfo.id }}" value="{{ aInfo.name }}">
+ <input type="hidden" id="initialBalance{{ aInfo.id }}" value="{{ aInfo.initialBalance }}">
+ <input type="hidden" id="accountType{{ aInfo.id }}" value="{{ aInfo.accountType }}">
+ <input type="hidden" id="liquid{{ aInfo.id }}" value="{{ aInfo.liquid }}">
+ <input type="hidden" id="accountActive{{ aInfo.id }}" value="{{ aInfo.active }}">
+ <input type="hidden" id="entityId{{ aInfo.id }}" value="{{ aInfo.entityId }}">
+ <input type="hidden" id="assetId{{ aInfo.id }}" value="{{ aInfo.assetId }}">
+ <input type="hidden" id="assetName{{ aInfo.id }}" value="{{ aInfo.assetName }}">
+ <input type="hidden" id="notes{{ aInfo.id }}" value="{{ aInfo.notes }}">
+ <a id="editAccount{{ aInfo.id }}" class="editAccount" onclick="editAccount({{ aInfo.id }})" title="Edit this account"><img src="/images/edit.png"></a><a href="/account/show-transactions?dateRange=last30&id={{ aInfo.id }}">{{ aInfo.name }}</a>
+ </td>
+ <td class="accountBalance">
+  {% if accounts[name]|length > 1 %}$ {{ aInfo.balance|number_format(2) }}{% endif %}
+  {% if accounts[name]|length == 1 %}<b>$ {{ aInfo.balance|number_format(2) }}{% endif %}
+ </td>
+</tr>
+{% set runningTotal = runningTotal + aInfo.balance %}
+{% endfor %}
+{% if accounts[name]|length > 1 %}
+<tr><td class="accountName"></td><td class="accountBalance"><b>$ {{ runningTotal|number_format(2) }}</b></td></tr>
+{% endif %}
+</table>
+{% endif %}
+{% endfor %}
+<table id="balanceSheet">
+<tr><th colspan="2">Balance Sheet</th></tr>
+<tr>
+ <td style="padding-left:8px"><a href="/assets">Assets</a></td>
+ <td class="accountBalance">$ {{ assetsValue|number_format(2) }}</td>
+</tr>
+<tr>
+ <td style="padding-left:8px">Liabilities</td>
+ <td class="accountBalance">$ {{ accountLiabilities|number_format(2) }}</td>
+</tr>
+<tr>
+ <td style="padding-left:8px"><b>Net Worth</b></td>
+ <td class="accountBalance"><b>$ {{ networth|number_format(2) }}</b></td></tr>
+</table>
+
+<table id="reportListing">
+<tr class="spacer"><td></td><td></td></tr>
+<tr><th class="reportName" colspan="2">Reports</th></tr>
+{% set reportId = 0 %}
+{% for url,name in reports %}
+<tr class="{% if reportId is odd %}odd{% endif %}"><td colspan="2"><a href="{{ url }}">{{ name }}</a></td></tr>
+{% set reportId = reportId + 1 %}
+{% endfor %}
+</table>
+
+<table id="utilListing">
+<tr class="spacer"><td></td><td></td></tr>
+<tr><th class="reportName" colspan="2">Utilities</th></tr>
+<tr class="even"><td colspan="2"><a href="/settings">User Settings</a></td></tr>
+<tr class="odd"><td colspan="2"><a href="/categories">Manage Categories</a></td></tr>
+<tr class="even"><td colspan="2"><a href="/entities">Manage Entities</a></td></tr>
+<tr class="odd"><td colspan="2"><a href="/tags">Manage Tags</a></td></tr>
+</table>
+
+</div><!-- end leftSide -->
+</td>
+<td style="vertical-align:top">
+<div id="rightSide">
+ <div id="incomeVsExpensesDiv">
+  <table id="incomeVsExpenses">
+   <tr><th colspan="2">Income vs Expenses: Current Month</th></tr>
+   <tr><td class="iveLabel"><i>Income</i></td><td class="iveValue">$ {{ income|number_format(2) }}</td></tr>
+   <tr class="odd"><td class="iveLabel"><i>Expenses</i></td><td class="iveValue">$ {{ expenses|number_format(2) }}</td></tr>
+  </table>
+ </div><br><br>
+ <div id="incomeVsExpensesChart" style="height:250px;width:425px;"></div>
+
+ <div id="topCategories30DaysDiv">
+  <table id="topCategories30Days">
+   <tr><th colspan="2">Top Categories Last 30 Days</th></tr>
+   {% for id,info in topCategories %}
+   <tr class="{% if id is odd %}odd{% endif %}">
+     <td class="iveLabel"><i><a href="/account/show-transactions?dateRange=last30&amp;categoryId={{ info.categoryId }}">{{ info.category }}</a></i></td>
+     <td class="iveValue">$ {{ info.amt }}</td>
+   </tr>
+   {% endfor %}
+  </table>
+ </div>
+
+</div><!-- end right side -->
+</td>
+</tr></table><br><br>
+<script type="text/javascript">
+$(function () {
+  var data = [{ data: [[0,{{ income|raw }}]] },
+              { data: [[1,{{ expenses|raw }}]] }];
+  var options = {
+    series: { stack: 0,
+              lines: { show: false, steps: false },
+              bars: { show:true, barWidth: 0.9, align: 'center' }
+    },
+    yaxis: { tickLength:0 },
+    xaxis: { tickLength:0, ticks: [[0, 'Income'], [1, 'Expenses']]}
+  };
+  $.plot($("#incomeVsExpensesChart"), data, options);
+});
+</script>

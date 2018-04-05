@@ -1,0 +1,8 @@
+Date Range:
+<select id="range" name="range">
+<option value="currentyear"{% if range == "currentyear" %} SELECTED{% endif %}>Current Year</option>
+<option value="lastyear"{% if range == "lastyear" %} SELECTED{% endif %}>Last Year</option>
+<option value="lasttwoyears"{% if range == "lasttwoyears" %} SELECTED{% endif %}>Last 2 Years</option>
+<option value="lastthreeyears"{% if range == "lastthreeyears" %} SELECTED{% endif %}>Last 3 Years</option>
+<option value="all"{% if range == "all" %} SELECTED{% endif %}>All</option>
+</select>

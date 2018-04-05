@@ -1,0 +1,123 @@
+a { 
+ font-style:normal;
+ text-decoration:none; 
+}
+
+a.addNewAccount {
+ font-size:12px;
+}
+
+td.label {
+ font-size:11px;
+ font-weight:bold;
+ padding-right:4px;
+ text-align:right;
+}
+
+input#initialBalance { width:85px; }
+input#accountName, input#assetSearch {
+ width:400px;
+}
+
+#editAccountForm select, #editAccountForm input { font-size:12px; }
+
+#notes { font-size:12px; width:400px; height:120px; }
+
+
+table#accountListing { 
+ float:left;
+}
+
+table.accountTbl { margin-top: 16px; width:100%; }
+table.accountTbl tr { height:22px; }
+table.accountTbl tr.spacer { height:16px; }
+table.accountTbl td { font-size:12px; }
+table.accountTbl th { 
+ background-color:#ddd;
+ padding-left:8px; 
+ text-align:left;  
+}
+th.accountName { 
+text-decoration:bold; 
+}
+
+.accountType { font-size:14px; font-weight:bold;  }
+
+.accountName {
+ padding-left:8px;
+ padding-right:8px;
+ text-align:left; 
+ width:225px;
+}
+.accountBalance {
+ padding-right:8px;
+ text-align:right;
+ width:120px; 
+}
+tr.odd { background-color:#e1edfb; }
+
+div#incomeVsExpensesDiv { 
+ width:400px;
+}
+table#balanceSheet th, table#incomeVsExpenses th, table#topCategories30Days th, table#reportListing th, table#utilListing th {
+ background-color:#ddd;
+ padding-left:8px;
+ text-align:left;
+}
+
+table#balanceSheet { 
+ font-size:16px; 
+ margin-top:16px; 
+ width:100%; 
+}
+table#balanceSheet td { font-size:12px; }
+
+table#incomeVsExpenses { width:100%; }
+
+table#incomeVsExpenses td {
+ font-size:12px;
+}
+
+td.iveLabel { 
+ font-style:italic;
+ padding-left:8px;
+}
+
+td.iveValue {
+ padding-right:8px;
+ text-align:right;
+}
+
+div#topCategories30DaysDiv {
+}
+
+table#topCategories30Days {
+margin-top:32px;
+width:400px;
+}
+
+table#topCategories30Days td { font-size:12px; }
+
+table#reportListing, table#utilListing {
+margin-top:16px; 
+width:100%;
+}
+
+table#reportListing td, table#utilListing td { 
+ font-size:12px; 
+ padding-left:8px;
+}
+
+a.editAccount { 
+ cursor:pointer;
+ display:none;
+ margin-left:235px;
+ position:absolute;
+}
+
+div#rightSide { 
+float:left; 
+width:450px;
+margin-left:48px; 
+padding-top:16px;
+}

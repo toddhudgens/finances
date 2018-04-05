@@ -1,0 +1,154 @@
+<h1>Mortgage Calculator</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+Account: 
+<select id="account" onchange="accountUpdated()">
+  <option value="custom">Custom Mortgage Calculator</option>
+{% for i, row in accounts %}
+  <option value="{{ row.id }}"{% if row.id==accountId %} SELECTED{% endif %}>{{ row.name }}</option>
+{% endfor %}
+</select>
+<br><br>
+<div style="font-size:10px; width:550px;">
+Changing values on this page does not override values set on the account itself.<br>
+Use this to calculate custom payment schedules based on extra payment amount.
+</div>
+<br>
+<input type="hidden" id="currentMonth" value="{{ currentMonth }}">
+<input type="hidden" id="accountId" value="{{ accountId }}">
+
+<table id="fieldsetContainer">
+ <tr>
+  <td class="fieldset">
+   <fieldset id="initial">
+    <legend>Loan Details</legend>
+    <table id="initialFigures">
+     <tr>
+       <td class="label">Purchase Price</td>
+       <td class="value">
+         {% if accountId != '' %}<span id="purchasePrice">$ {{ loanDetails.purchasePrice|number_format(2) }}</span>
+         {% else %}
+           <input type="text" id="purchasePrice" value="{{ loanDetails.purchasePrice|number_format(2) }}" onchange="recalculateMortgage()">
+         {% endif %}
+       </td>
+      </tr>
+     <tr>
+       <td class="label">Down Payment</td>
+       <td class="value">
+        {% if accountId != '' %}<span id="downPayment">$ {{ loanDetails.downPayment|number_format(2) }}</span>
+      	 {% else %}
+      	    <input type="text" id="downPayment" value="{{ loanDetails.downPayment|number_format(2) }}" onchange="recalculateMortgage()">
+	 {% endif %}
+       </td>
+      </tr>
+      <tr>
+       <td class="label">Loan Amount</td>
+       <td id="loanAmount" class="value">$ 
+         {{ (loanDetails.purchasePrice-loanDetails.downPayment)|number_format(2) }}
+       </td>
+      </tr>
+      <tr>
+       <td class="label">Loan Term</td>
+       <td class="value">
+        {% if accountId != '' %}<span id="loanterm">{{ loanDetails.term }}</span> years
+        {% else %}
+        <select id="loanterm" onchange="recalculateMortgage()">
+        {% for i in 1..30 %}
+         <option value="{{ i }}"{% if i == loanDetails.term %} SELECTED{% endif %}>{{ i }}</option>
+        {% endfor %}
+        </select> years
+        {% endif %}
+      </td>
+     </tr>
+     <tr>
+      <td class="label"># of Payments</td>
+      <td id="paymentCount" class="value">{{ (loanDetails.term*12) }}</td>
+     </tr>
+    </table>
+   </fieldset>
+  </td>
+  <td class="fieldset">
+   <fieldset id="options">
+    <legend>Options</legend>
+    <table>
+     <tr>
+      <td>Interest Rate:</td>
+      <td>
+       <input type="text" id="interest-rate" value="{{ rateForDisplay }}" onchange="recalculateMortgage()">%
+      </td>
+     </tr>
+     <tr>
+      <td>Extra Payment:</td>
+      <td><input type="text" id="extra-payment" value="{{ extra }}" onchange="recalculateMortgage()"></td>
+     </tr>
+    </table>
+   </fieldset>
+  </td>
+  <td class="fieldset">
+   <fieldset id="stats">
+    <legend>Loan Stats</legend>
+    <table id="loan-stats">
+     <tr>
+      <td class="label">Total Paid</td>
+      <td class="value"><span id="totalPaid">$ {{ customSchedule.totalPaid|number_format(2) }}</span>
+      </td>
+     </tr>
+     <tr>
+      <td class="label">Total Interest</td>
+      <td class="value"><span id="totalInterest">$ {{ customSchedule.totalInterestPaid|number_format(2) }}</span>
+      </td>
+     </tr>
+     <tr>
+       <td class="label">Max Interest</td>
+       <td class="value"><span id="maxInterest">$ {{ maxInterest|number_format(2) }}</span>
+       </td>
+     </tr>
+     <tr>
+      <td class="label">Interest Savings</td>
+      <td class="value"><span id="interestSavings">{{ (maxInterest-customSchedule.totalInterestPaid)|number_format(2) }}</span></td>
+     </tr>
+     <tr>
+      <td class="label">% Interest Paid</td>
+      <td class="value"><span id="percentInterestPaid">{{ (customSchedule.totalInterestPaid/maxInterest*100)|number_format(2) }}</span>%
+      </td>
+     </tr>
+     <tr>
+      <td class="label">Actual # of Payments</td>
+      <td class="value" id="actualPaymentCount">{{ customSchedule.loanData|length }}</td>
+     </tr>
+     <tr>
+      <td class="label">Payoff Date</td>
+      <td class="value"><span id="payoffDate">{{ payoffDate }}</span></td>
+     </tr>
+    </table>
+   </fieldset>
+  </td>
+ </tr>
+</table>
+<br>
+<table id="mortgageCalculator">
+ <tr>
+  <th class="paymentNumber">#</th>
+  <th class="month">Month</th>
+  <th class="balance">Starting Balance</th>
+  <th class="payment">Montly Payment</th>
+  <th class="principal">Principal</th>
+  <th class="interest">Interest</th>
+  <th class="extra">Extra</th>
+  <th class="principal">Principal</th>
+  <th class="endingBalance">Ending Balance</th>
+ </tr>
+ {% for i, info in loanData %}
+ <tr class="{% if i is odd %}odd{% else %}even{% endif %}{% if info.month == currentMonth %} currentMonth{% endif %}">
+  <td class="paymentNumber">{{ i+1 }}</td>
+  <td class="month">{{ info.month }}</td>
+  <td class="balance">$ {{ info.startingBalance|number_format(2) }}</td>
+  <td class="payment">$ {{ info.monthlyPayment|number_format(2) }}</td> 
+  <td class="principal">$ {{ info.principal|number_format(2) }}</td>
+  <td class="interest">$ {{ info.interest|number_format(2) }}</td>
+  <td class="extraPayment">$ {{ info.extra|number_format(2) }}</td>
+  <td class="totalPayment">$ {{ info.totalPayment|number_format(2) }}</td>
+  <td class="endingBalance">$ {{ info.endingBalance|number_format(2) }}</td>
+ </tr>
+ {% endfor %}
+</table>

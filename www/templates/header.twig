@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+ <title>{{ title }}</title>
+ <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta http-equiv="Content-Language" content="en-us">
+ <script type="text/javascript" src="/vendor/components/jquery/jquery.min.js"></script>
+ <script type="text/javascript" src="/vendor/components/jqueryui/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="/vendor/softcommerce/jquery-flot/assets/js/jquery.flot.min.js"></script>
+ <script type="text/javascript" src="/vendor/softcommerce/jquery-flot/assets/js/plugins/jquery.flot.categories.min.js"></script>
+ <script type="text/javascript" src="/vendor/softcommerce/jquery-flot/assets/js/plugins/jquery.flot.pie.min.js"></script>
+ <script type="text/javascript" src="/vendor/softcommerce/jquery-flot/assets/js/plugins/jquery.flot.time.min.js"></script>
+ <script type="text/javascript" src="/vendor/softcommerce/jquery-flot/assets/js/plugins/jquery.flot.tooltip.min.js"></script>
+ <script type="text/javascript" src="/js/searchAhead.js"></script>
+ <script type="text/javascript" src="/js/session-timeout.js"></script>
+ <script type="text/javascript" src="/js/date.js"></script>
+{% if js|length > 0 %}
+{% for i, path in js %}
+ <script type="text/javascript" src="/js/{{ path }}"></script>
+{% endfor %}
+{% endif %}
+{% if loggedIn %}
+ <script type="text/javascript">initSessionMonitor();</script>
+{% endif %}
+ <link type="text/css" rel="stylesheet" href="/vendor/components/jqueryui/themes/cupertino/jquery-ui.min.css">
+ <link type="text/css" rel="stylesheet" href="/vendor/components/jqueryui/themes/cupertino/theme.css">
+ <link type="text/css" rel="stylesheet" href="/css/common.css" media="screen">
+ <link type="text/css" rel="stylesheet" href="/css/searchAhead.css">
+{% if css|length > 0 %}
+{% for i, path in css %}
+ <link type="text/css" rel="stylesheet" href="/css/{{ path }}">
+{% endfor %}
+{% endif %}
+</head>
+<body>
+ <div id="timeoutDialog" title="Session Timeout Warning" style="display:none">Your session will expire in <span id="minutesRemaining">X</span> minutes.<br>Any unsaved changes will be lost!</div>
+ <div id="content">

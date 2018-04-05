@@ -1,0 +1,43 @@
+<div id="editAccountForm" style="display:none">
+<input type="hidden" id="accountId">
+<table>
+ <tr>
+  <td class="label">Name:</td>
+  <td><input type="text" id="accountName"></td>
+ </tr>
+ <tr>
+  <td class="label">Initial Balance:</td>
+  <td><input type="text" id="initialBalance"></td>
+ </tr>
+ <tr>
+  <td class="label">Account Type:</td>
+  <td>
+    <select id="accountType" onchange="updateAccountType()">
+    {% for id,name in accountTypes %}
+      <option value="{{ id }}">{{ name }}</option>
+    {% endfor %}
+    </select>
+  </td>
+ </tr>
+ <tr>
+  <td class="label">Notes:</td>
+  <td><textarea id="notes"></textarea></td>
+ </tr>
+ <tr id="associatedAssetRow" style="display:none">
+  <td class="label">Associated Asset:</td>
+  <td>{% include 'search-ahead.twig' with {'name': 'asset'} %}</td>
+ </tr>
+ <tr>
+  <td class="label"><label for="liquid">Liquid?</label></td>
+  <td><input type="checkbox" id="liquid"></td>
+ </tr>
+ <tr>
+  <td class="label"><label for="accountActive">Active?</label></td>
+  <td><input type="checkbox" id="accountActive"></td>
+ </tr>
+ <tr>
+  <td></td>
+  <td><input type="button" value="Save" onclick="saveAccount()"></td>
+ </tr>
+</table>
+</div>

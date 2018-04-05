@@ -1,0 +1,10 @@
+#cashflowIncome, #cashflowVariableExpense, #cashflowFixedExpense, #cashflow {
+ font-size:12px; 
+}
+tr.odd { background-color:#e1edfb; }
+
+td.incomeName, td.expenseName { width:250px; }
+td.amount { text-align:right; width:100px; }
+
+td.totalLabel { font-weight:bold; width:250px; }
+td.totalAmount { text-align:right; width:100px; }

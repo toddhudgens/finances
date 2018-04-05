@@ -1,0 +1,32 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+<input type="text" id="searchText" value="{{ searchString }}">
+<input type="button" value="Search" onclick="transactionSearch()">
+<br><br>
+{% if transactions|length %}
+<table id="transactionListing">
+<tr>
+ <th class="tDate">Date</th>
+ <th class="tAccount">Account</th>
+ <th class="tPayee">Payee</th>
+ <th class="tWit">Amount</th>
+ <th>Type</th>
+ <th class="tNotes">Notes</th>
+</tr>
+{% for key,row in transactions %}
+<tr class="{% if key is odd %}odd{% endif %}">
+ <td class="transactionDate">{{ row.date|slice(0,10) }}</td>
+ <td>{{ row.accountName }}</td>
+ <td class="transactionPayee">
+  <a href="/account/show-transactions?entityId={{ row.entityId }}">
+    {{ row.entityName }}
+  </a>
+ </td>
+ <td class="transactionWithdrawal">{{ row.amount }}</td>
+ <td>{{ row.transactionType }}</td>
+ <td class="transactionNotes">{{ row.notes }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}

@@ -1,0 +1,48 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+Vehicle: 
+<select id="carSelector" name="carSelector">
+{% for arrId,car in automobiles %}
+<option value="{{ car.id }}"{% if car.id == id %} SELECTED{% endif %}>{{ car.name }}</option>
+{% endfor %}
+</select>
+<br><br>
+Gas Mileage | 
+<a href="/automobile/maintenance?id={{ id }}">Maintenance</a> |
+<a href="/automobile/log?id={{ id }}">All</a> |
+<a href="/automobile/tco?id={{ id }}">TCO</a>
+<br><br>
+{% if mileageInfo|length > 0 %}
+<table id="vehicleInfo">
+<tr>
+ <th>Date</th>
+ <th>Gas Station</th>
+ <th>Mileage</th>
+ <th>Gas Price</th>
+ <th>Gallons Pumped</th>
+ <th>Cost</th>
+ <th>Miles Driven</th>
+ <th>MPG</th>
+</tr>
+{% for key, row in mileageInfo %}
+<tr class="{% if key is odd %}odd{% endif %}">
+ <td class="date">{{ row.date }}</td>
+ <td class="gasStation">{{ row.entityName }}</td>
+ <td class="mileage">{{ row.mileage }}</td>
+ <td class="gasPrice">${{ row.gasPrice }}</td>
+ <td class="gasPumped">{{ row.gasPumped }}</td>
+ <td class="cost">${{ row.amount|number_format(2) }}</td>
+ <td class="milesDriven">{{ row.milesDriven }}</td>
+ <td class="mpg">{{ row.mpg }}</td>
+</tr>
+{% endfor %}
+</table>
+<br><br><br>
+<b>Total Miles Driven:</b> {{ totals.milesDriven }}<br>
+<b>Total Gas Pumped:</b> {{ totals.gasPumped|number_format(1) }} gal.<br>
+<b>Average MPG:</b> {{ totals.averageMPG }}<br>
+<b>Total Gas Expenses:</b> ${{ totals.totalSpent }}<br>
+<b>Cost per Mile:</b> {{ totals.costPerMile }} cents<br>
+<br><br><br><br>
+{% endif %}

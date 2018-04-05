@@ -1,0 +1,33 @@
+table#mortgageCalculator { font-size:12px; }
+tr.odd { background-color:#e1edfb; }
+
+fieldset#initial, fieldset#options, fieldset#stats { 
+ border:1px solid #ccc;
+ font-size:12px; 
+ width:260px;
+}
+
+table#fieldsetContainer td.fieldset { 
+ vertical-align:top; 
+ width:260px;
+}
+
+table#initialFigures tr { height:25px; }
+table#initialFigures td.label { font-weight:bold; }
+table#initialFigures td.value { text-align:right; width:100px; }
+
+table#loan-stats td.label { font-weight:bold; width:120px;}
+table#loan-stats td.value { text-align:right; width:100px; }
+
+
+input#interest-rate, input#extra-payment { text-align:center; width:50px; }
+
+.paymentNumber { text-align:center; width:40px; }
+.month { text-align:center; width:130px; }
+.balance { text-align:center; width:100px; }
+.payment, .extraPayment, .totalPayment, .interest, .principal, .endingBalance { 
+ text-align:center; width:120px; 
+}
+tr.currentMonth td { background-color:#99ff66; }
+
+#purchasePrice, #downPayment, #loanAmount { text-align:center; width:80px; }

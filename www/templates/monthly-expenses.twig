@@ -1,0 +1,77 @@
+<h1>{{ pageTitle }}</h1>
+{% if income|length > 0 %}
+{% set incomeTotal = 0 %}
+<b>Income</b>
+<table id="cashflowIncome">
+{% for i, info in income %}
+<tr class="{% if i is odd %}odd{% endif %}">
+ <td class="incomeName">{{ info.name }}</td>
+ <td class="amount">${{ info.amount|number_format(2) }}</td>
+</tr>
+{% set incomeTotal = incomeTotal + info.amount %}
+{% endfor %}
+{% if income|length > 1 %}
+<tr>
+ <td></td>
+ <td class="amount"><b>${{ incomeTotal|number_format(2) }}</b></td>
+</tr>
+{% endif %}
+</table>
+{% endif %}
+<br><br>
+{% if fixedExpenses|length > 0 %}
+{% set fixedExpenseTotal = 0 %}
+<b>Fixed Expenses</b>
+<table id="cashflowFixedExpense">
+{% for i, info in fixedExpenses %}
+<tr class="{% if i is odd %}odd{% endif %}">
+ <td class="expenseName">{{ info.name }}</td>
+ <td class="amount">${{ info.amount|number_format(2) }}</td>
+</tr>
+{% set fixedExpenseTotal = fixedExpenseTotal + info.amount %}
+{% endfor %}
+{% if fixedExpenses|length > 1 %}
+<tr>
+ <td></td>
+ <td class="amount"><b>${{ fixedExpenseTotal|number_format(2) }}</b></td>
+</tr>
+{% endif %}
+</table>
+{% endif %}
+<br><br>
+{% if variableExpenses|length > 0 %}
+{% set variableExpenseTotal = 0 %}
+<b>Variable Expenses</b>
+<table id="cashflowVariableExpense">
+{% for i, info in variableExpenses %}
+<tr class="{% if i is odd %}odd{% endif %}">
+ <td class="expenseName">{{ info.name }}</td>
+ <td class="amount">${{ info.amount|number_format(2) }}</td>
+</tr>
+{% set variableExpenseTotal = variableExpenseTotal + info.amount %}
+{% endfor %}
+{% if variableExpenses|length > 1 %}
+<tr>
+ <td></td>
+ <td class="amount"><b>${{ variableExpenseTotal|number_format(2) }}</b></td>
+</tr>
+{% endif %}
+</table>
+{% endif %}
+<br><br>
+{% set expenseTotal = fixedExpenseTotal + variableExpenseTotal %}
+{% set netCashflow = incomeTotal - expenseTotal %}
+<table id="cashflow">
+ <tr>
+  <td class="totalLabel">Total Income:</td>
+  <td class="totalAmount">${{ incomeTotal|number_format(2) }}</td>
+ </tr>
+ <tr>
+  <td class="totalLabel">Total Expenses:</td>
+  <td class="totalAmount">${{ expenseTotal|number_format(2) }}</td>
+ </tr>
+ <tr>
+  <td class="totalLabel">Net:</td>
+  <td class="totalAmount">${{ netCashflow|number_format(2) }}</td>
+ </tr>
+</table>

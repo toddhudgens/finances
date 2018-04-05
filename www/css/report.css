@@ -1,0 +1,46 @@
+div#assetAllocation { height:500px; width:1000px; }
+
+div#expenseByCategory, div#expensesByEntity { height:500px; width:1400px; }
+
+#flotTip {
+ background-color: #000;
+ border-radius:4px;
+ border:2px solid #fff;
+ color:#f0f0f0;
+ font-size:12px; 
+ z-index: 100;
+ box-shadow: 0 0 10px #555;
+ opacity: .7;
+ padding:3px 5px;
+ filter: alpha(opacity=70);
+ -webkit-border-radius: 4px;
+ -moz-border-radius: 4px;
+}
+
+.entityName { width:300px; }
+.byEntityTotal { width:100px; }
+.entityName { text-align:left; }
+
+#fullScreenChart, #expensesByEntityChart { width:700px; height:420px; }
+#pieChartTotal { font-size:16px; margin-left:650px;margin-top:-20px; }
+
+.dateInput {
+ border:1px solid #ccc;
+ font-size:11px;
+ padding:6px;
+ text-align:center;
+ width:64px;
+}
+
+@media (min-width:1700px) { #fullScreenChart { width:1680px; height:800px; }}
+@media (min-width:1600px) and (max-width:1700px) { #fullScreenChart { width:1580px; height:800px; }}
+@media (min-width:1500px) and (max-width:1600px) { #fullScreenChart { width:1480px; height:800px; }}
+@media (min-width:1400px) and (max-width:1500px) { #fullScreenChart { width:1380px; height:720px; }}
+@media (min-width:1300px) and (max-width:1400px) { #fullScreenChart { width:1280px; height:640px; }}
+@media (min-width:1200px) and (max-width:1300px) { #fullScreenChart { width:1180px; height:600px; }}
+@media (min-width:1100px) and (max-width:1200px) { #fullScreenChart { width:1080px; height:540px;} }
+@media (min-width:1000px) and (max-width:1100px) { #fullScreenChart { width:980px; height:480px; }}
+@media (min-width:900px) and (max-width:1000px) { #fullScreenChart { width:880px; height:420px; }}
+@media (min-width:800px) and (max-width:900px) { #fullScreenChart { width:780px; height:360px; }}
+@media (min-width:700px) and (max-width:800px) { #fullScreenChart { width:680px; height:300px; }}
+@media (min-width:600px) and (max-width:700px) { #fullScreenChart { width:580px; height:240px; }}

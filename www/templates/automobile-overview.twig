@@ -1,0 +1,11 @@
+<h1>My Automobiles</h1>
+{% for key,row in assets %}
+<span style="font-size:26px; font-weight:bold">{{ row.name }}</span> (${{ row.currentValue }})<br>
+<img src="{{ row.picture }}" width="800"><br>
+<a href="/automobile/maintenance?id={{ row.id }}">Maintenance Log</a> | 
+<a href="/automobile/gas-mileage?id={{ row.id }}">Gas Mileage</a> | 
+<a href="/automobile/tco?id={{ row.id }}">TCO</a>
+<br>
+{% if row.notes|length > 0 %}Notes: {{ row.notes }}{% endif %}
+<br><br><br>
+{% endfor %}

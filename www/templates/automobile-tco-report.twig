@@ -1,0 +1,24 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+Vehicle:
+<select id="carSelector" name="carSelector">
+{% for arrId,car in automobiles %}
+<option value="{{ car.id }}"{% if car.id == id %} SELECTED{% endif %}>{{ car.name }}</option>
+{% endfor %}
+</select>
+<br><br>
+<a href="/automobile/gas-mileage?id={{ id }}">Gas Mileage</a> |
+<a href="/automobile/maintenance?id={{ id }}">Maintenance</a> |
+<a href="/automobile/log?id={{ id }}">All</a> |
+TCO
+<br><br>
+<script type="text/javascript">
+window.chartData = {{ chartData|json_encode|raw }};
+</script>
+<div id="fullScreenChart"></div><br>
+Starting Mileage: {{ totals.start|number_format(0) }}<br>
+Current Mileage: {{ totals.end|number_format(0) }}<br>
+Miles Driven: {{ totals.milesDriven|number_format }}<br>
+<b>Total Cost:</b> ${{ tco.totalCost|number_format(2) }}<br>
+<b>Cost Per Mile:</b> {{ totals.costPerMile|number_format(2) }} cents<br>

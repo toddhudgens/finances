@@ -1,0 +1,36 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+Entity:
+<select id="entityId" class="entitySelect" name="entityId"><option value=""></option>
+{% for key,entity in entities %}
+<option value="{{ entity.id }}"{% if entity.id == selectedEntity %} SELECTED{% endif %}>{{ entity.name }}</option>{% endfor %}</select>
+<br><br>
+{% include 'report-date-range-select.twig' %}
+<br><br>
+{% include 'report-grouping-select.twig' %}
+<br><br>
+<label for="showAllTimePeriods">Show All Time Periods: </label>
+<input type="checkbox" id="showAllTimePeriods" name="showAllTimePeriods"{% if showAllTimePeriods %} CHECKED{% endif %}>
+<br><br>
+<input type="button" id="search" value="Run Report" onclick="runExpensesByEntityReport()">
+<br><br><br>
+<script type="text/javascript">
+window.chartData = {{ chartData|raw }}
+</script>
+{% if chartData is not empty %}
+<div id="fullScreenChart"></div>
+{% endif %}
+<br><br>
+{% set runningTotal = 0 %}
+{% if expenses|length > 0 %}
+<table id="results"><tr><th>{{ grouping|capitalize }}</th><th>Amount</th></tr>
+{% for expenseGrouping, total in expenses %}
+<tr><td><a href="/account/show-transactions?{{ grouping }}={{ expenseGrouping }}&entityId={{ selectedEntity }}">{{ expenseGrouping }}</a></td>
+<td><center>${{ total|number_format(2) }}</center></td></tr>
+{% set runningTotal = runningTotal + total %}
+{% endfor %}
+<tr><td><b>Total</b></td><td><b>${{ runningTotal|number_format(2) }}</b></td></tr>
+</table>
+{% endif %}
+<br><br>

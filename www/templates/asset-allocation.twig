@@ -1,0 +1,10 @@
+<h1>{{ pageTitle }}</h1>
+<br><br>
+<div id="fullScreenChart"></div>
+<br>
+<script type="text/javascript">
+window.assetAllocationData = {{(assetJSON|json_encode|raw)}};
+</script>
+<div id="pieChartTotal">
+<b>Total Value:</b> $ {{ totalValue }}
+</div>

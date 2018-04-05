@@ -1,0 +1,20 @@
+div.searchDD {
+background-color:#fff;
+border:1px solid #777;
+display:none;
+font-size:11px;
+position:absolute;
+text-align:left;
+z-index:999;
+}
+
+.ddOption, .ddOptionHover { 
+line-height:16px; 
+padding:2px; 
+}
+
+div.ddOptionHover {
+background-color:#004F87; 
+color:#fff; 
+cursor:pointer; 
+}

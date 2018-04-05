@@ -1,0 +1,51 @@
+<h1>Asset Listing</h1>
+{% include 'return-to-accounts-page.twig' %}
+<a href="javascript:showNewAssetForm()" class="addNewAsset">
+<img style="vertical-align:middle" src="/images/add.png">&nbsp; Add New Asset</a>
+{% include 'add-asset-dialog.twig' %}
+
+{% set runningAssetTotal = 0 %}
+{% for categoryName, categoryAssets in assets %}
+{% if categoryAssets|length > 0 %}
+<h3>{{ categoryName }}</h3>
+<table class="assets">
+{% if categoryDetails[categoryName] is defined %}
+<tr><td colspan="5">{{ categoryDetails[categoryName]|raw }}</td></tr>
+{% endif %}
+<tr>
+ <th class="name">Name</th>
+ <th class="value">Value</th>
+ <th class="madeIn">Made In</th>
+ <th class="notes">Notes</th>
+ <th class="actions">Actions</th>
+</tr>
+{% set assetTotal = 0 %}
+{% for i, assetInfo in categoryAssets %}
+{% set assetTotal = assetTotal + assetInfo.currentValue %}
+{% set runningAssetTotal = runningAssetTotal + assetInfo.currentValue %}
+<tr class="{% if i is even %}odd{% endif %}">
+ <td id="name{{ assetInfo.id }}" class="name">
+  <input type="hidden" id="categoryId{{ assetInfo.id }}" value="{{ assetInfo.categoryId }}">
+  <input type="hidden" id="categoryName{{ assetInfo.id }}" value="{{ categoryName }}">
+  <input type="hidden" id="picture{{ assetInfo.id }}" value="{{ assetInfo.picture }}">
+  <input type="hidden" id="currentValue{{ assetInfo.id }}" value="{{ assetInfo.currentValue }}">
+  <input type="hidden" id="purchasePrice{{ assetInfo.id }}" value="{{ assetInfo.initialValue }}">
+  <input type="hidden" id="assetName{{ assetInfo.id }}" value="{{ assetInfo.name }}">
+  <input type="hidden" id="madeIn{{ assetInfo.id }}" value="{{ assetInfo.countryId }}">
+  {{ assetInfo.name }}{% if assetInfo.nameExtra is defined %}{{ assetInfo.nameExtra|raw }}{% endif %}
+ </td>
+ <td class="value">$ {{ assetInfo.currentValue|number_format(2) }}</td>
+ <td class="madeIn">{{ assetInfo.countryName }}</td>
+ <td id="notes{{ assetInfo.id }}" class="notes">{{ assetInfo.notes }}</td>
+ <td id="actions{{ assetInfo.id }}" class="actions" onmouseover="showAssetActions({{ assetInfo.id }});" onmouseout="hideAssetActions({{ assetInfo.id }});">
+   <a id="edit{{ assetInfo.id }}" title="Edit this asset" onclick="showAssetEditForm({{ assetInfo.id }});"><img src="/images/edit.png"></a>&nbsp;
+   <a id="delete{{ assetInfo.id }}" title="Delete this asset" onclick="deleteAsset({{ assetInfo.id }});"><img src="/images/cross.png"></a>
+ </td>
+</tr>
+{% endfor %}
+<tr><td></td><td class="value"><b>$ {{ assetTotal|number_format(2) }}</b></td></tr>
+</table>
+{% endif %}
+{% endfor %}
+<br><br>
+Total Value of Assets: $ <b>{{ runningAssetTotal|number_format(2) }}</b>

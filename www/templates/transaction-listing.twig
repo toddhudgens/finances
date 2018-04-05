@@ -1,0 +1,109 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+
+{% if reportType == 'Category' %}
+<a class="reportLink" href="/report/expenses-by-category?categoryId={{ categoryId }}&amp;range=all&amp;groupBy=year&amp;showAllTimePeriods=0" style="font-size:12px"><img src="/images/stats.png">&nbsp; Graph Transactions</a><br>
+{% endif %}
+
+{% if showMtgCalcLink %}
+<a class="reportLink" href="/mortgage-calculator?id={{ accountId }}">
+  <img src="/images/table.png">&nbsp;&nbsp;Mortgage Calculator
+</a><br>
+{% endif %}
+
+{% if showStockAssetsLink %}
+<a class="reportLink" href="/account/assets?id={{ accountId }}">
+  <img src="/images/stocks.png">&nbsp;&nbsp;Portfolio Overview
+</a><br>
+{% endif %}
+
+{% if nextTxNumber != '' %}
+<input type="hidden" id="nextTransactionNumber" value="{{ nextTxNumber }}">
+<a href="javascript:showNewTransactionForm()" class="addNewTransaction"><img style="vertical-align:middle" src="/images/add.png">&nbsp; Add New Transaction</a><br>
+{% endif %}
+
+{% if month == '' %}
+<br>
+<span class="dateRangeSelection">Viewing: 
+<select id="dateRange" name="dateRange" onchange="updateDateRange()">
+ <option value="last30"{% if dateRange == "last30" %} SELECTED{% endif %}>Last 30 Days</option>
+ <option value="currentYear"{% if dateRange == "currentYear" %} SELECTED{% endif %}>Current Year</option>
+ <option value="lastYear"{% if dateRange == "lastYear" %} SELECTED{% endif %}>Last Year</option>
+ <option value="custom"{% if dateRange == "custom" %} SELECTED{% endif %}>Custom</option>
+ <option value="all"{% if dateRange == "all" %} SELECTED{% endif %}>All</option>
+</select>
+</span>
+<br>
+{% endif %}
+
+{% include 'add-transaction-dialog.twig' %}
+
+<input type="hidden" id="today" value="{{ today }}">
+{% if accountId != '' %}<input type="hidden" id="accountId" value="{{ accountId }}">{% endif %}
+{% if entityId != '' %}<input type="hidden" id="entityId" value="{{ entityId }}">{% endif %}
+
+<script>window.tdata = {};</script>
+
+{% if transactions|length > 0 %}
+<br><br>
+<table id="transactionListing">
+ <tr class="even">
+  <th class="tDate">Date</th>
+  <th class="tNum">#</th>
+  <th class="tPayee">Payee</th>
+  {% if showAccountName == 1 %}<th class="transactionAccount">Account</th>{% endif %}
+  {% if showInterest == 0 %}
+  <th class="tCat">Category</th>
+  <th class="tWit">Withdrawal</th>
+  <th class="tDep">Deposit</th>
+  {% else %}
+  <th class="payment">Payment</th>
+  <th class="principal">Principal</th>
+  <th class="interest">Interest</th>
+  {% endif %}
+  <th class="tBal">Balance</th>
+  <th class="tNotes">Notes</th>
+  <th class="tAct">Actions</th>
+ </tr>
+{% for id, info in transactions %}
+ <tr class="{% if id is odd %}odd{% endif %}">
+  <td class="tDate">{{ info.date }}
+   <script>window.tdata['{{ info.id }}'] = {{ info.hiddenVars|json_encode|raw }};
+   </script>
+  </td>
+  <td class="tNum">{{ info.transactionNumber }}</td>
+  {% if info.transactionType == "Transfer" %}
+   <td><a href="?id={{ info.transferAccountId }}{{ timefilter }}">{{ info.payee }}</a></td>
+  {% else %}
+  <td><a href="?entityId={{ info.entityId }}{{ timefilter }}">{{ info.payee }}</a></td>
+  {% endif %}
+{% if showAccountName %}
+  <td>
+   <a href="/account/show-transactions?id={{ info.accountId }}{{ timefilter }}">{{ info.accountName }}</a>
+  </td>
+{% endif %}
+  {% if  showInterest == 0 %}
+  <td>{{ info.categoryLink|raw }}</td>
+  <td class="tWit">{{ info.withdrawal|number_format(2) }}</td>
+  <td class="tDep">{{ info.deposit|number_format(2) }}</td>
+  {% else %}
+  <td class="tPmt">{{ info.deposit|number_format(2) }}</td>
+  <td class="tPrin">{{ info.principal|number_format(2) }}</td>
+  <td class="tInt">{{ info.interest|number_format(2) }}</td>
+  {% endif %}
+  <td class="tBal">{{ info.balance|number_format(2) }}</td>
+  <td class="tNotes">{{ info.notes }}</td>
+  <td class="tAct">
+   <a class="editT" onclick="editT({{ info.id }})">&nbsp;</a>&nbsp;
+   <a class="delT" onclick="delT({{ info.id }})">&nbsp;</a>
+  </td>
+ </tr>
+{% endfor %}
+</table><br>
+{% if reportType == "Account" and transactions|length > 25 %}
+<a href="javascript:showNewTransactionForm()" class="addNewTransaction">
+ <img style="vertical-align:middle" src="/images/add.png">
+ &nbsp; Add New Transaction
+</a>
+{% endif %}
+{% endif %}

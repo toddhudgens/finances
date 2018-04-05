@@ -1,0 +1,20 @@
+body { font-family: Verdana; }
+div#content { margin-bottom:48px; }
+
+a.returnToAccountsPage { font-size:12px; text-decoration:none; }
+
+img.backIcon { vertical-align:middle; }
+
+div#footer { 
+background-color:#ddd;
+border-top:1px solid #aaa;
+bottom:0px;
+font-size:14px;
+height:26px;
+left:0;
+line-height:26px;
+padding-left:16px;
+position:fixed;
+width:100%; 
+margin-top:32px;
+}

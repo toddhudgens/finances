@@ -1,0 +1,28 @@
+<div id="editAssetForm" style="display:none;">
+ <table id="editAssetTable">
+  <tr><td class="label">Name:</td><td><input type="text" id="assetName" value=""></td></tr>
+  <tr>
+   <td class="label">Category:</td>
+   <td>
+     {% include 'search-ahead.twig' with {'name': 'assetCategory'} %}
+   </td>
+  </tr>
+  <tr><td class="label">Purchase Price:</td><td><input type="text" id="purchasePrice" value=""></td></tr>
+  <tr><td class="label">Current Value:</td><td><input type="text" id="currentValue" value=""></td></tr>
+  <tr>
+   <td class="label">Made In:</td>
+   <td>
+    <select id="madeIn">
+     <option value=""></option>
+     {% for id, info in countries %}
+       <option value="{{ info.id }}">{{ info.name }}</option>
+     {% endfor %}
+    </select>
+   </td>
+  </tr>
+  <tr><td class="label">Picture URL:</td><td><input type="text" id="picture" value=""></td></tr>
+  {{ assetEditFields|raw }}
+  <tr><td class="label">Notes:</td><td><textarea id="notes" name="notes"></textarea></td></tr>
+  <tr><td></td><td><input type="button" value="Save" onclick="saveAsset()"></td></tr>
+ </table>
+</div>

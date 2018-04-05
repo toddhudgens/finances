@@ -1,0 +1,3 @@
+.pmAssetInfo, .silverAssetInfo, .goldAssetInfo { display:none; }
+input#pmQty { font-size:12px; width:40px; }
+select#silverType { font-size:12px; }

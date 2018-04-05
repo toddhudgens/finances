@@ -1,0 +1,118 @@
+a { text-decoration:none; }
+
+span.dateRangeSelection { font-size:12px; }
+
+table#transactionListing th { font-size:12px; }
+table#transactionListing td { 
+ font-size:12px; 
+ height:20px;
+}
+
+tr.odd { background-color:#e1edfb; } 
+
+.tDate { 
+ text-align:left; 
+ width:80px;
+}
+.tNum {
+ text-align:center;
+ width:50px;
+}
+.tPayee {
+ text-align:left;
+ width:300px;
+}
+.tCat {
+ text-align:left;
+ width:200px;
+}
+.tWit, .tDep, .tBal {
+ padding-right:4px;
+ text-align:right;
+ width:80px;
+}
+.tNotes {
+ padding-left:8px;
+ text-align:left; 
+ width:300px;
+}
+td.tNotes { font-size:10px; }
+
+td.tAct { padding-left:4px; width:20px; }
+
+td.tAct a { 
+cursor:pointer;
+display:none; 
+text-decoration:none; 
+}
+tr:hover td.tAct a { display:inline-block; }
+
+a.editT, a.delT { height:14px; width:15px; }
+a.editT { background: url('/images/edit.png'); }
+a.delT { background: url('/images/cross.png'); }
+
+
+a.addNewTransaction { 
+ font-size:12px;
+ text-decoration:none; 
+}
+
+td.label { 
+ font-size:11px;
+ font-weight:bold;
+ padding-right:4px;
+ text-align:right; 
+}
+
+table.transactionEdit { border-spacing: 10px; border-collapse: separate; }
+table.transactionEdit td { padding:0px; }
+
+#editTransactionForm select, #editTransactionForm input { font-size:12px; }
+
+input#payeeSearch { width:278px; }
+div#payeeDD { width:250px; }
+
+input#categorySearch { width:250px; }
+div#categoryDD { width:250px; }
+tr.categorySelectRow select { width:220px; }
+input.categoryAmount { width:52px; }
+a.addNextCategory { display:none; }
+
+input#transactionNumber, input#total, input#interest, input#tax, 
+input#date, input#ticker, input#shares, input#sharePrice, input#adminFees { 
+ font-size:12px;
+ width:80px; 
+}
+tr#interestRow { display:none; }
+
+#notes { 
+ font-size:12px;
+ width:278px; 
+}
+#tagSearch { width:278px; }
+#tagArea { display:none; }
+#tagsDiv { font-size:12px; min-height:36px; width:250px; }
+#tagDD { width:250px; }
+#tagsLabel { display:none; }
+a.removeTag { cursor:pointer; font-size:10px; color:red; vertical-align:middle; }
+
+tr.categorySelectRow { display:none; }
+img.categoryAddIcon { vertical-align:middle; }
+
+a.reportLink { 
+ font-size:12px;
+ text-decoration:none; 
+}
+a.reportLink img { vertical-align:middle; }
+
+
+select#vehicle { width:300px; }
+input#mileage { width:60px; }
+#maintenanceNotes { 
+font-size:12px; 
+width:266px; 
+}
+
+input#pricePerGallon { width:60px; }
+input#mileage { width:60px; }
+input#gallonsPumped { width:60px; }

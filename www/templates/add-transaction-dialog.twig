@@ -1,0 +1,155 @@
+<script>window.accounts = {{ accountsFull|json_encode|raw }};</script>
+<script>window.categories = {{ categories|json_encode|raw }};</script>
+<div id="editTransactionForm" style="display:none;">
+  <table class="transactionEdit">
+    <tr>
+      <td class="label">Type:</td>
+      <td>
+        <select id="transactionType" name="transactionType" onchange="updateTxType()">
+          {% for type in transactionTypes %}
+          <option value="{{ type }}">{{ type }}</option>
+          {% endfor %}
+        </select>
+      </td>
+    </tr>
+    <tr id="payeeRow">
+      <td class="label">Payee:</td>
+      <td>
+        {% include 'search-ahead.twig' with {'name': 'payee'} %}
+      </td>
+    </tr>
+    <tr id="fromAccountRow" style="display:none">
+      <td class="label">From:</td>
+      <td>
+        <select id="fromAccount" name="fromAccount">
+        {% if accounts|length > 0 %}
+        {% for aId, aInfo in accounts %}
+        <option value="{{ aInfo.id }}">{{ aInfo.name }}</option>
+        {% endfor %}
+        {% endif %}
+        </select>
+      </td>
+    </tr>
+    <tr id="toAccountRow" style="display:none">
+      <td class="label">To:</td>
+      <td>
+        <select id="toAccount" name="toAccount">
+        {% if accounts|length > 0 %}
+        {% for aId, aInfo in accounts %}
+        <option value="{{ aInfo.id }}">{{ aInfo.name }}</option>
+        {% endfor %}
+        {% endif %}
+        </select>
+      </td>
+    </tr>
+    <tr id="categoryRow">
+      <td class="label">Category:</td>
+      <td>
+        {% include 'search-ahead.twig' with {'name': 'category'} %}&nbsp;
+        <a href="javascript:switchToCategorySelect()">
+          <img class="categoryAddIcon" src="/images/add.png">
+        </a>
+      </td>
+    </tr>
+    {% for i in 1..9 %}
+    <tr id="categorySelectRow{{ i }}" class="categorySelectRow">
+      <td id="categorySelect{{ i }}Label" class="label">
+        Category #{{ i }}:
+      </td>
+      <td>
+        <select id="categorySelect{{ i }}" class="categorySelect" onchange="categorySelectUpdated({{ i }})">
+        </select>
+        <input type="text" id="categoryAmount{{ i }}" class="categoryAmount">
+        {% if (i != 1) and (i != 8) %}
+        <a id="addNextCategory{{ i }}" onclick="addNextCategorySelect({{ i }})">
+          <img class="categoryAddIcon" src="/images/add.png">
+        </a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td class="label">Date:</td>
+      <td>
+        <input type="text" id="date" name="date" value="{{ today }}">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Number:</td>
+      <td>
+        <input type="text" id="transactionNumber" value="{{ nextTxNum }}">
+      </td>
+    </tr>
+    <tr id="tickerRow">
+      <td class="label">Stock Ticker:</td>
+      <td>
+        <input type="text" id="ticker" name="ticker">
+      </td>
+    </tr>
+    <tr id="sharesPurchasedRow">
+      <td class="label">Share<br>Quantity:</td>
+      <td>
+        <input type="text" id="shares" name="shares">
+      </td>
+    </tr>
+    <tr id="sharePriceRow">
+      <td class="label">Share Price:</td>
+      <td>
+        <input type="text" id="sharePrice" name="sharePrice">
+      </td>
+    </tr>
+    <tr id="interestRow">
+      <td class="label">Interest:</td>
+      <td>
+        <input type="text" id="interest" name="interest">
+      </td>
+    </tr>
+    <tr id="taxRow">
+      <td class="label">Tax:</td>
+      <td>
+        <input type="text" id="tax" name="tax">
+      </td>
+    </tr>
+    <tr id="feeRow">
+      <td class="label">Admin Fees:</td>
+      <td>
+        <input type="text" id="adminFees" name="adminFees">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Total:</td>
+      <td>
+        <input type="text" id="total" name="total">
+      </td>
+    </tr>
+    <tr>
+      <td class="label">Notes:</td>
+      <td>
+        <textarea id="notes" name="notes"></textarea>
+      </td>
+    </tr>
+    <tr id="tagRow">
+      <td class="label">Add Tag:</td>
+      <td>
+        {% include 'search-ahead.twig' with {'name': 'tag'} %}&nbsp;
+        <a href="javascript:addTag()">
+          <img class="categoryAddIcon" src="/images/add.png">
+        </a>
+      </td>
+    </tr>
+    <tr id="tagArea">
+      <td class="label"><div id="tagsLabel">Tags:</div></td>
+      <td>
+        <div id="tagsDiv"></div>
+        <input type="hidden" id="tagIds" name="tagIds" value="">
+      </td>
+    </tr>
+    {{ transactionEditFields|raw }}
+    <tr>
+      <td></td>
+      <td>
+        <input type="button" value="Save" onclick="saveTransaction()">
+      </td>
+    </tr>
+  </table>
+</div>

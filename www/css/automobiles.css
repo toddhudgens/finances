@@ -1,0 +1,22 @@
+tr.odd { background-color: #e1edfb; }
+td.date, td.mileage, td.cost { text-align:center; width:100px; }
+
+tr#maintainenanceLogHeader, tr#autoTaxLogHeader, tr#autoInsuranceLogHeader {
+ display:none;
+}
+
+img.maintenanceLogAddIcon, img.gasMileageLogAddIcon { 
+ cursor:pointer;
+ vertical-align:middle; 
+}
+input.mileage, input.maintenanceCost, input.autoTaxCost, input.autoInsuranceCost { width:60px; }
+textarea.maintenanceNotes { font-size:12px; width:100%; }
+
+tr.mlVehicle { padding-top:12px; }
+tr.mlNotes td { border-bottom:1px solid #ccc; padding-bottom:12px; }
+
+select.autoTaxVehicle { width:100%; }
+tr.atVehicle { padding-top:12px; }
+tr.atCost td { border-bottom:1px solid #ccc; padding-bottom:12px; }
+
+textarea#maintenanceNotes { width:900px; height:100px; }

@@ -1,0 +1,44 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<br>
+Vehicle:
+<select id="carSelector" name="carSelector">
+{% for arrId,car in automobiles %}
+<option value="{{ car.id }}"{% if car.id == id %} SELECTED{% endif %}>{{ car.name }}</option>
+{% endfor %}
+</select>
+<br><br>
+<a href="/automobile/gas-mileage?id={{ id }}">Gas Mileage</a> |
+<a href="/automobile/maintenance?id={{ id }}">Maintenance</a> |
+All |
+<a href="/automobile/tco?id={{ id }}">TCO</a>
+<br><br>
+{% if maintenanceLog|length > 0 %}
+<table id="vehicleInfo">
+<tr>
+ <th>Date</th>
+ <th>Mileage</th>
+ <th>Cost</th>
+ <th>Notes</th>
+</tr>
+{% for key, row in maintenanceLog %}
+<tr class="{% if key is odd %}odd{% endif %}">
+ <td class="date">{{ row.date }}</td>
+ <td class="mileage">{{ row.mileage }}</td>
+ <td class="cost">${{ row.amount|number_format(2) }}</td>
+ <td class="notes">{{ row.notes }}</td>
+</tr>
+{% endfor %}
+</table>
+<br><br>
+<b>Total Costs Logged:</b> ${{ totals.totalSpent|number_format(2) }}<br>
+<b>Total Miles Logged:</b> {{ totals.milesLogged }}<br>
+<b>Cost Per Mile:</b> ${{ totals.costPerMile|number_format(3) }}<br>
+<b>Maintenance Notes:</b><br>
+<textarea id="maintenanceNotes">{{ info.maintenanceNotes }}</textarea>
+<br>
+<input value="Update Notes" onclick="updateMaintenanceNotes()" type="button">
+<input id="view" type="hidden" value="{{ view }}">
+<input id="assetId" type="hidden" value="{{ id }}">
+<br>
+{% endif %}

@@ -1,0 +1,28 @@
+<h1>{{ pageTitle }}</h1>
+{% include 'return-to-accounts-page.twig' %}
+<a class="reportLink" href="/account/show-transactions?id={{ accountId }}">
+  <img src="/images/table.png">&nbsp;&nbsp;Transaction Listing
+</a><br>
+<br>
+{% if assets|length > 0 %}
+<table id="stockAssets">
+ <tr>
+  <th>Ticker</th>
+  <th>Latest Price</th>
+  <th>Qty</th>
+  <th>Total</th>
+  <th>Avg Price</th>
+  <th>Net</th>
+ </tr>
+{% for id, info in assets %}
+ <tr>
+  <td>{{ info.ticker }}</td>
+  <td>${{ info.price|number_format(2) }}</td>
+  <td>{{ info.qty }}</td>
+  <td>${{ (info.qty * info.price)|number_format(2) }}</td>
+  <td>${{ info.avgPrice|number_format(2) }}</td>
+  <td class="{% if info.net < 0 %}red{% else %}green{% endif %}">${{ info.net|number_format(2) }}
+ </tr>
+{% endfor %}
+</table>
+{% endif %}

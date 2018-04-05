@@ -1,0 +1,62 @@
+a.addNewAsset {
+ font-size:12px;
+ text-decoration:none;
+}
+
+td.label {
+ font-size:11px;
+ font-weight:bold;
+ padding-right:4px;
+ text-align:right;
+}
+
+table.assets td { font-size:12px; }
+table.assets th { font-size:13px; }
+th.name, td.name { 
+ text-align:left; 
+ width:400px; 
+}
+
+div#editAssetForm { width:500px; }
+
+table#editAssetTable { border-spacing: 4px; border-collapse: separate; }
+table#editAssetTable td { padding:0px; }
+table#editAssetTable tr td select, table#editAssetTable tr td input { font-size:12px; }
+
+
+
+th.category, td.category {
+ padding-left:8px;
+ text-align:left; 
+ width:250px;
+}
+
+th.value, td.value { 
+ padding-right:8px; 
+ width:100px; 
+}
+th.value { text-align:center; } 
+td.value { text-align:right; }
+
+th.notes, td.notes { 
+ padding-left:8px;
+ text-align:left; 
+ width:400px;
+}
+
+th.madeIn, td.madeIn { text-align:center; width:300px; }
+
+
+
+td.actions a { cursor:pointer; display:none; }
+
+input#assetName { font-size:12px; width:465px; }
+input#purchasePrice, input#currentValue { font-size:12px; width:90px; }
+input#picture { font-size:12px; width:465px; }
+textarea#notes { font-size:12px; width:465px; }
+
+input#assetCategorySearch { 
+ font-size:12px;
+ width:465px; 
+}
+div#assetCategoryDD { width:450px; }
