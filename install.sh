@@ -5,7 +5,6 @@ printf "My Financials Web App Installer v0.1\n\n"
 printf "1. Creating database schema\n"
 read -p "MySQL Root Username: " MYSQL_UN
 
-rm ~/.mylogin.cnf > /dev/null 2>&1
 mysql_config_editor set --login-path=local --host=localhost --user=$MYSQL_UN --password
 mysql --login-path=local -e "CREATE database my_financials;" > /dev/null 2>&1
 mysql --login-path=local -e "SOURCE ./sql/schema.sql;"
