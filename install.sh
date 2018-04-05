@@ -29,8 +29,9 @@ composer install
 cd ../
 printf "[DONE]\n\n"
 
-printf "5. Creating twig cache directory\n"
-mkdir cache
+printf "5. Creating twig cache directory and setting ownership to www-data (will ask for superuser privileges)\n"
+mkdir -p cache
+sudo chown -R www-data cache/
 printf "[DONE]\n\n"
 
 printf "6. Create your login user\n"
@@ -45,10 +46,11 @@ while true; do
 done
 mysql --login-path=local -e "DELETE FROM my_financials.users"
 mysql --login-path=local -e "INSERT INTO my_financials.users VALUES(0,\"$username\",md5(\"$password&CASH_RULES_EVERYTHING_AROUND_ME_CREAM\"));"
+printf "[DONE]\n"
 
 printf "\n7. Create an AlphaVanta API key (optional)\n"
-printf "  - If you want to use the stock / mutual fund features, you'll need an API key to get pricing data\n"
-printf "  - Sign up for an API key at https://www.alphavantage.co/support/\n\n"
+printf "* If you want to use the stock / mutual fund features, you'll need an API key to get pricing data\n"
+printf "* Sign up for an API key at https://www.alphavantage.co/support/\n\n"
 read -p "API KEY [hit enter to skip]: " alphavantageapikey
 sed -i "/SetEnv ALPHA_VANTAGE_API_KEY/c\SetEnv ALPHA_VANTAGE_API_KEY \"$alphavantageapikey\"" www/.htaccess
 printf "[DONE]\n\n"
