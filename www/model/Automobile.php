@@ -6,12 +6,6 @@
 
 class Automobile extends AbstractPlugin { 
 
-  public static $automobileCategoryId = 55;
-  public static $automobileGasCategoryId = 8;
-  public static $maintenanceCategoryId = 11;
-  public static $autoInsuranceCategoryId = 37;
-  public static $autoTaxId = 99;
-
   public static function getCategoryId() {
     $dbh = dbHandle();
     $q = 'SELECT id FROM categories WHERE name="Automobiles"';
@@ -347,7 +341,7 @@ class Automobile extends AbstractPlugin {
     $stmt = $dbh->prepare($q);
     $stmt->bindParam(':txId', $txId);
     $stmt->execute();
-    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
   }
 
