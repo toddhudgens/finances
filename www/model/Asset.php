@@ -208,7 +208,8 @@ class Asset {
 
   public static function getForCategory($catId) { 
     $dbh = dbHandle(1);
-    $stmt = $dbh->prepare('SELECT * FROM assets WHERE categoryId=?');
+    $q = 'SELECT * FROM assets a WHERE a.categoryId=? ORDER BY a.sold ASC, a.dateSold DESC';
+    $stmt = $dbh->prepare($q);
     $stmt->execute(array($catId));
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $automobiles = array();
