@@ -2,10 +2,7 @@
 
 // setup autoloading of classes
 function my_autoloader($class_name) {
-  if (strpos($class_name, "Form_") === 0) {
-    require_once('form/'.substr($class_name,5).'.php');
-  }
-  else { require_once('model/'.$class_name.'.php'); }
+  require_once('model/'.$class_name.'.php'); 
 }
 
 
