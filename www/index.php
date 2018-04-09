@@ -39,7 +39,6 @@ if ($loginRequired && !isLoggedIn()) {
 if ($action == "") { $action = "pageNotFound"; }
 else { loadPlugins(); }
 
-//global $twig;
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader, 
                               array('cache' => '../cache/'));
