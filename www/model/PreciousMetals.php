@@ -6,12 +6,22 @@
 
 class PreciousMetals extends AbstractPlugin { 
 
-  public static $categoryIds = array(61,128);
+  public static $categories = array("Silver", "Gold");
 
 
-  public static function getCategoryIds() { 
-    return self::categoryIds;
-  } 
+
+  public static function getCategoryIds() {
+    $metals = '"' . implode('","', self::$categories) . '"';
+
+    $dbh = dbHandle();
+    $q = 'SELECT id FROM categories WHERE name IN ('.$metals.')';
+    $result = $dbh->query($q);
+    $categories = array();
+    $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $row) { $categories[] = $row['id']; }
+    return $categories;
+  }
+
 
 
   public static function getAsset($id) { 
@@ -112,13 +122,14 @@ class PreciousMetals extends AbstractPlugin {
 
   public static function assetCategoryExtraInfo(&$categories=array()) {
     $dbh = dbHandle();
+    $metals = '"' . implode('","', self::$categories) . '"';
     $q = 'SELECT
             metal,
             price, 
             timestamp,
             UNIX_TIMESTAMP(CURRENT_TIMESTAMP)-UNIX_TIMESTAMP(timestamp) as secondsOld 
           FROM preciousMetalPrices 
-          WHERE metal IN ("Gold","Silver") 
+          WHERE metal IN ('.$metals.') 
           ORDER BY timestamp DESC LIMIT 2';
     $stmt = $dbh->prepare($q);                                                       
     $stmt->execute();
@@ -163,6 +174,7 @@ class PreciousMetals extends AbstractPlugin {
     // and update value for assets taht have 
     $pmResults = array();
     $pmAssets = array();
+    $categoryIds = PreciousMetals::getCategoryIds();
     $q = 'SELECT
             a.id,
             pmt.name,
@@ -172,7 +184,7 @@ class PreciousMetals extends AbstractPlugin {
             ROUND(pmt.weight*pmt.purity*pma.quantity,2) as weight
           FROM assets a, preciousMetalAssets pma, preciousMetalTypes pmt
           WHERE
-              a.categoryId IN (61,128) AND
+              a.categoryId IN ('.implode(',', $categoryIds).') AND
               a.id=pma.assetId AND pma.typeId=pmt.id AND pma.automaticPricing=1
           GROUP BY a.id';
     $pmResults = $dbh->query($q);
@@ -184,7 +196,7 @@ class PreciousMetals extends AbstractPlugin {
       }
     }
 
-    $metals = array('Silver', 'Gold');
+    $metals = self::$categories; 
     foreach ($metals as $i => $metal) {
       if (isset($assets[$metal])) { 
         foreach ($assets[$metal] as $assetId => $info) {
