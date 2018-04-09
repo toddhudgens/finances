@@ -13,10 +13,8 @@ input.mileage, input.maintenanceCost, input.autoTaxCost, input.autoInsuranceCost
 textarea.maintenanceNotes { font-size:12px; width:100%; }
 
 tr.mlVehicle { padding-top:12px; }
-tr.mlNotes td { border-bottom:1px solid #ccc; padding-bottom:12px; }
 
 select.autoTaxVehicle { width:100%; }
 tr.atVehicle { padding-top:12px; }
-tr.atCost td { border-bottom:1px solid #ccc; padding-bottom:12px; }
 
 textarea#maintenanceNotes { width:900px; height:100px; }
