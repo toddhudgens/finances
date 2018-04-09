@@ -12,7 +12,7 @@ A PHP/Apache/Mysql webapp used to manage personal finances
   > sudo systemctl restart apache2
 
 3. If you have a Github account, clone the project
-  > git clone https://github.com/toddhugens/my-financials
+  > git clone https://github.com/toddhudgens/my-financials
   
   > cd my-financials
 
