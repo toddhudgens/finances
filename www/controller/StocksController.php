@@ -20,7 +20,7 @@ function updatePrices() {
 
   // update the stockAssets table
   foreach ($stockTickers as $i => $info) { 
-    $priceInfo = Stocks::getLatestPrice($info['ticker']);
-    Stocks::updateAssetsWithTicker($info['ticker'], $priceInfo['price']);
+    $price = Stocks::getLatestPrice($info['ticker']);
+    Stocks::updateAssetsWithTicker($info['ticker'], $price);
   }
 }
