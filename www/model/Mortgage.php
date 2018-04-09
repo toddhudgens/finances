@@ -15,10 +15,10 @@ public static function getAccounts() {
 
 public static function getPayments($id) {
   $dbh = dbHandle(1);
-  $q = 'SELECT t.id, t.date, tc.amount, c.name as category                                                                                                                        
-        FROM transactions t                                                                                                                              
-        LEFT JOIN transactionCategory tc  ON t.id=tc.transactionId                                                                                                                
-        LEFT JOIN categories c ON tc.categoryId=c.id                                                                                                                              
+  $q = 'SELECT t.id, t.date, tc.amount, c.name as category
+        FROM transactions t
+        LEFT JOIN transactionCategory tc  ON t.id=tc.transactionId
+        LEFT JOIN categories c ON tc.categoryId=c.id
         WHERE t.accountId=:id';
   $stmt = $dbh->prepare($q);
   $stmt->bindParam(':id', $id);
