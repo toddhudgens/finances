@@ -95,8 +95,8 @@ class Stocks extends AbstractPlugin {
 
     Stocks::updatePrice($ticker);
     $price = Stocks::getLatestPrice($ticker);
-    $currentValue = $price * $updatedShareCount;
-    
+    $currentValue = $price * $updatedShareCount; 
+   
     $q = 'REPLACE INTO stockAssets VALUES'.
          '(:accountId,:ticker,:qty,:avgPrice,:total,:currentValue,CURRENT_TIMESTAMP)';
     $stmt = $dbh->prepare($q);
@@ -188,12 +188,14 @@ class Stocks extends AbstractPlugin {
       break;
     }
 
-    $dbh = dbHandle();
-    $q = 'INSERT INTO stockPrices VALUES(:ticker, :price, CURRENT_TIMESTAMP)';
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam(':ticker', $ticker);
-    $stmt->bindParam(':price', $price);
-    $stmt->execute();
+    if ($price > 0) { 
+      $dbh = dbHandle();
+      $q = 'INSERT INTO stockPrices VALUES(:ticker,:price,CURRENT_TIMESTAMP)';
+      $stmt = $dbh->prepare($q);
+      $stmt->bindParam(':ticker', $ticker);
+      $stmt->bindParam(':price', $price);
+      $stmt->execute();
+    }
   }
 
   
