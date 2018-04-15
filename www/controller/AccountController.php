@@ -31,7 +31,8 @@ function showTransactions() {
       $showInterest = 1;
     }
     if ($accountInfo['accountType'] == 7) { 
-      $transactionTypes = array('Transfer', 'Stock Purchase', 'Stock Sale');
+      $transactionTypes[] = 'Stock Purchase';
+      $transactionTypes[] = 'Stock Sale';
       $showStockAssetsLink = 1;
     }
   }
