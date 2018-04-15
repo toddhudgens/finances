@@ -1,22 +1,46 @@
 $(document).ready(function() { 
 
-  $('body').on("categoryUpdated", function (event) { 
+  $('body').on('addTransactionFormShown', function(event) {
+    resetAll();
+  });
 
-    var categoriesById = {};
-    for (var i = 0; i < window.categories.length; i++) {	
-      var cat = window.categories[i];
-      categoriesById[cat.id] = cat.name;
+
+  $('body').on("editTransactionFormShown", function (event) { 
+    resetAll();
+
+    categoriesById = getCategoriesById();
+    var cats = [];
+    for (var i = 0; i < event.categoriesSelected.length; i++) {
+	cats.push(categoriesById[event.categoriesSelected[i]]);
     }
+    updateVehicleMaintenanceFormVisibility(cats);
+    updateGasMileageFormVisibility(cats);
+    updateInsuranceFormVisibility(cats);
+    updateVehicleTaxFormVisibility(cats);
 
+
+    var txId = event.transactionId;
+    for (var i = 0; i < cats.length; i++) {
+      if (cats[i] == "Auto Maintenance") { populateMaintenanceInfo(txId); }
+      else if (cats[i] == "Auto Insurance") { populateAutoInsuranceInfo(txId); }
+      else if (cats[i] == "Auto Registration") { populateAutoTaxInfo(txId); }
+      else if (cats[i] == "Gasoline") { populateGasMileageInfo(txId); }
+      else { continue; }
+    }
+  });
+
+
+  $('body').on("categoryUpdated", function (event) {
+    categoriesById = getCategoriesById();
     var cats = [];
     if ($('#categoryRow:hidden').length == 0) {
-      cats.push(categoriesById[$('#categoryId').val()]);	
+      cats.push(categoriesById[$('#categoryId').val()]);
     }
     else {
-      for (var i = 1; i < 9; i++) { 
+      for (var i = 1; i < 9; i++) {
         if ($('#categorySelect'+i).val() > 0) {
-	  cats.push(categoriesById[$('#categorySelect'+i).val()])
-        }  
+          cats.push(categoriesById[$('#categorySelect'+i).val()])
+        }
       }
     }
     updateVehicleMaintenanceFormVisibility(cats);
@@ -26,50 +50,7 @@ $(document).ready(function() {
   });
 
 
-
-  $('body').on('addTransactionFormShown', function(event) {
-    resetMaintenanceLog();
-    resetInsuranceLog();
-    resetAutoTaxLog();
-    resetGasMileageLog();
-  });
-
-  $('body').on("editTransactionFormShown", function (event) { 
-    resetMaintenanceLog();
-    resetInsuranceLog();
-    resetAutoTaxLog();
-    resetGasMileageLog();
-
-    var categoriesById = {};
-    for (var i = 0; i < window.categories.length; i++) { 
-      var cat = window.categories[i];
-      categoriesById[cat.id] = cat.name;
-    }
-
-    var categoriesSelected = event.categoriesSelected;
-    var txId = event.transactionId;
-
-    for (var i = 0; i < categoriesSelected.length; i++) {
-      var catName = categoriesById[categoriesSelected[i]];
-      if (catName == "Auto Maintenance") {
-	populateMaintenanceInfo(txId);
-      }
-      else if (catName == "Auto Insurance") {
-        populateAutoInsuranceInfo(txId);
-      }
-      else if (catName == "Auto Registration") {
-        populateAutoTaxInfo(txId);
-      }
-      else if (catName == "Gasoline") {
-        populateGasMileageInfo(txId);
-      }
-      else { continue; }
-    }
-  });
-
-
   $('body').on('saveTransaction', function(event) { 
-
     var gmRowCount = $('#gasMileageRowCount').val();
     window.ajaxParams += '&gasMileageRowCount='+gmRowCount;
     for (var i = 1; i <= gmRowCount; i++) {	
@@ -106,26 +87,33 @@ $(document).ready(function() {
 });
 
 
-function resetMaintenanceLog() {
+
+function getCategoriesById() {
+  var categoriesById = {};
+  for (var i = 0; i < window.categories.length; i++) {	
+    var cat = window.categories[i];
+    categoriesById[cat.id] = cat.name;
+  }
+  return categoriesById;
+}
+
+
+
+function resetAll() {
   $('.maintenanceInput').remove();
   $('.maintenance').hide();
   $('#maintenanceRowCount').val(0);
-}
-function resetInsuranceLog() {
   $('.autoInsuranceInput').remove();
   $('.autoInsurance').hide();
   $('#autoInsuranceRowCount').val(0);
-}
-function resetAutoTaxLog() {
   $('.autoTaxInput').remove();
   $('.autoTax').hide();
   $('#autoTaxRowCount').val(0);
-}
-function resetGasMileageLog() {
   $('.gasMileageInput').remove();
   $('.gasMileage').hide();
   $('#gasMileageRowCount').val(0);
 }
+
 
 
 function populateGasMileageInfo(transactionId) {
@@ -175,7 +163,6 @@ function populateAutoInsuranceInfo(transactionInfo) {
               var data = jQuery.parseJSON(raw);
               for (var i = 0; i < data.length; i++) {
                 var log = data[i];
-                console.log(log); console.log("calling addAutoInsuranceEntry()");
                 addAutoInsuranceLogEntry();
                 $('#autoInsuranceVehicle'+(i+1)).val(log.assetId);
                 $('#autoInsuranceCost'+(i+1)).val(log.amount);
@@ -208,29 +195,27 @@ function populateMaintenanceInfo(transactionId) {
 
 
 function updateVehicleMaintenanceFormVisibility(cats) {
-  if ($.inArray("Auto Maintenance", cats) != -1) { addMaintenanceLogEntry(); }
+  if ($.inArray("Auto Maintenance", cats) != -1) { $('#maintainenanceLogHeader').show(); }
   else { $('tr.maintenance').hide(); }
 }
 
 
 function updateGasMileageFormVisibility(cats) {
-  console.log("HERE!!!");
-  console.log(cats);
   if (($.inArray("Gasoline", cats) != -1) && 
       ($.inArray("Diesel", cats) != -1)) { 
-    addGasMileageLogEntry(); 
+    $('#gasMileageHeader').show();
   }
   else { $('tr.gasMileage').hide(); }
 }
 
 
 function updateInsuranceFormVisibility(cats) {
-  if ($.inArray("Auto Insurance", cats) != -1) { addAutoInsuranceLogEntry(); }
+  if ($.inArray("Auto Insurance", cats) != -1) { $('#autoInsuranceLogHeader').show(); }
   else { $('tr.insurance').hide(); }
 }
 
 function updateVehicleTaxFormVisibility(cats) {
-  if ($.inArray("Auto Registration", cats) != -1) { addAutoTaxLogEntry(); }
+  if ($.inArray("Auto Registration", cats) != -1) { $('#autoTaxLogHeader').show(); }
   else { $('tr.vehicleTax').hide(); }
 }
 
@@ -256,8 +241,6 @@ function addMaintenanceLogEntry() {
   html += '<td class="label">Maintenance<br>Notes:</td>';
   html += '<td><textarea id="maintenanceNotes'+i+'" class="maintenanceNotes"></textarea>';
   html += '</td></tr>';
- 
-  $('#maintainenanceLogHeader').show();
   $(html).insertAfter($('#maintainenanceLogHeader'));
   $('#maintenanceRowCount').val(i);
 }
@@ -284,7 +267,6 @@ function addGasMileageLogEntry() {
   html += '</td></tr>';
   html += '<tr class="spacer gasMileage gasMileageInput"><td colspan="2"><br></td></tr>';
 
-  $('#gasMileageHeader').show();  
   $(html).insertAfter($('#gasMileageHeader'));
   $('#gasMileageRowCount').val(i);
 }
@@ -303,8 +285,6 @@ function addAutoTaxLogEntry() {
   html += '</select></td></tr>';
   html += '<tr class="autoTax autoTaxInput"><td class="label">Cost:</td>';
   html += '<td><input type="text" id="autoTaxCost'+i+'" class="autoTaxCost" value=""></td></tr>';
-
-  $('#autoTaxLogHeader').show();
   $(html).insertAfter($('#autoTaxLogHeader'));
   $('#autoTaxRowCount').val(i);
 }
@@ -326,7 +306,6 @@ function addAutoInsuranceLogEntry() {
   html += '<td><input type="text" id="autoInsuranceCost'+i+'" class="autoInsuranceCost" value="">';
   html += '</td></tr>';
 
-  $('#autoInsuranceLogHeader').show();
   $(html).insertAfter($('#autoInsuranceLogHeader'));
   $('#autoInsuranceRowCount').val(i);
 }

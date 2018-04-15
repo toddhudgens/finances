@@ -198,7 +198,7 @@ class Automobile extends AbstractPlugin {
         if ($_REQUEST['maintenanceVehicle'.$i] == '') { continue; }
         $stmt = $dbh->prepare($q);
         $stmt->bindParam(':assetId', $_REQUEST['maintenanceVehicle'.$i]);
-        $stmt->bindParam(':txId', $transactionId);
+        $stmt->bindParam(':txId', $txId);
         $stmt->bindParam(':amt', $_REQUEST['maintenanceCost'.$i]);
         $stmt->bindParam(':date', $_REQUEST['date']);
         $stmt->bindParam(':mileage', $_REQUEST['maintenanceMileage'.$i]);
@@ -228,7 +228,7 @@ class Automobile extends AbstractPlugin {
         if ($_REQUEST['autoTaxVehicle'.$i] == '') { continue; }
         $stmt = $dbh->prepare($q);
         $stmt->bindParam(':assetId', $_REQUEST['autoTaxVehicle'.$i]);
-        $stmt->bindParam(':txId', $transactionId);
+        $stmt->bindParam(':txId', $txId);
         $stmt->bindParam(':amt', $_REQUEST['autoTaxCost'.$i]);
         $stmt->execute();
       }
