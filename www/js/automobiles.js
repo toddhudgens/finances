@@ -201,7 +201,7 @@ function updateVehicleMaintenanceFormVisibility(cats) {
 
 
 function updateGasMileageFormVisibility(cats) {
-  if (($.inArray("Gasoline", cats) != -1) && 
+  if (($.inArray("Gasoline", cats) != -1) || 
       ($.inArray("Diesel", cats) != -1)) { 
     $('#gasMileageHeader').show();
   }
