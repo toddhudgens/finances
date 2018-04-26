@@ -158,20 +158,6 @@ function expensesByTag() {
 
 
 
-function monthlyExpenses() { 
-  $income = Expenses::getIncome();
-  $fixedExpenses = Expenses::getFixedExpenses();
-  $variableExpenses = Expenses::getVariableExpenses();
-
-  $viewParams = array('pageTitle' => "Monthly Expense Report",
-                      'income' => $income,
-                      'fixedExpenses' => $fixedExpenses,
-                      'variableExpenses' => $variableExpenses);
-  echo $GLOBALS['twig']->render('monthly-expenses.twig', $viewParams);
-}
-
-
-
 function networth() {
   $results = Networth::getLogEntries();
   if (!$results) {

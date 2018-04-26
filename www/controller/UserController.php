@@ -26,7 +26,7 @@ function index() {
                    'report/expenses-by-entity' => 'Expenses by Entity',
                    'report/expenses-by-tag' => 'Expenses by Tag',
                    'report/networth' => 'Net Worth Report',
-                   'report/monthly-expenses' => 'Monthly Expenses',
+                   '/monthly-budget' => 'Monthly Budget',
                    'mortgage-calculator' => 'Mortgage Calculator');
 
   $expenses = Transaction::getTotalForFrontPage("Withdrawal", 30);

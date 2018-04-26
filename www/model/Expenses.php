@@ -2,33 +2,6 @@
 
 class Expenses {
 
-public static function getIncome() {
-  $dbh = dbHandle(1);
-  $results = $dbh->query('SELECT * FROM monthlyCashflow WHERE type="Income"');
-  $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-  return $rows;
-}
-
-public static function getFixedExpenses() {
-  $dbh = dbHandle(1);
-  $q = 'SELECT * FROM monthlyCashflow 
-        WHERE type="Expense" AND amount>0 AND variableAmount=0 
-        ORDER BY amount DESC';
-  $results = $dbh->query($q);
-  $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-  return $rows;
-}
-
-public static function getVariableExpenses() {
-  $dbh = dbHandle(1);
-  $q = 'SELECT * FROM monthlyCashflow 
-        WHERE type="Expense" AND amount>0 AND variableAmount=1 
-        ORDER BY amount DESC';
-  $results = $dbh->query($q);
-  $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-  return $rows;
-}
-
 
 public static function calculateMonthlyExpense($row) {
   $id = $row['id'];

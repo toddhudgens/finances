@@ -1,4 +1,9 @@
 <h1>{{ pageTitle }}</h1>
+<script>window.items = {{ items|json_encode|raw }};</script>
+{% include 'return-to-accounts-page.twig' %}
+<a href="javascript:showNewBudgetItem()" id="addBudgetItem"><img style="vertical-align:middle" src="/images/add.png">&nbsp; Add Budget Item</a><br>
+<br>
+{% include 'add-budget-item.twig' %}
 {% if income|length > 0 %}
 {% set incomeTotal = 0 %}
 <b>Income</b>
@@ -6,7 +11,9 @@
 {% for i, info in income %}
 <tr class="{% if i is odd %}odd{% endif %}">
  <td class="incomeName">{{ info.name }}</td>
- <td class="amount">${{ info.amount|number_format(2) }}</td>
+ <td class="amount">
+  $ <a class="total" onclick="editBudgetItem({{ info.id }})">{{ info.amount|number_format(2) }}</a>
+ </td>
 </tr>
 {% set incomeTotal = incomeTotal + info.amount %}
 {% endfor %}
@@ -26,7 +33,9 @@
 {% for i, info in fixedExpenses %}
 <tr class="{% if i is odd %}odd{% endif %}">
  <td class="expenseName">{{ info.name }}</td>
- <td class="amount">${{ info.amount|number_format(2) }}</td>
+ <td class="amount">
+  $ <a class="total" onclick="editBudgetItem({{ info.id }})">{{ info.amount|number_format(2) }}</a>
+ </td>
 </tr>
 {% set fixedExpenseTotal = fixedExpenseTotal + info.amount %}
 {% endfor %}
@@ -46,7 +55,9 @@
 {% for i, info in variableExpenses %}
 <tr class="{% if i is odd %}odd{% endif %}">
  <td class="expenseName">{{ info.name }}</td>
- <td class="amount">${{ info.amount|number_format(2) }}</td>
+ <td class="amount">
+  $ <a class="total" onclick="editBudgetItem({{ info.id }})">{{ info.amount|number_format(2) }}</a>
+ </td>
 </tr>
 {% set variableExpenseTotal = variableExpenseTotal + info.amount %}
 {% endfor %}

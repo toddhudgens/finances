@@ -1,0 +1,34 @@
+a#addBudgetItem { 
+ font-size:12px;
+ text-decoration:none;
+}
+
+td.label {
+ font-size:11px;
+ font-weight:bold;
+ padding-right:4px;
+ text-align:right;
+}
+
+#addBudgetItemForm td { font-size:11px; }
+
+#addBudgetItemForm select, #addBudgetItemForm input {
+    font-size: 12px;
+}
+
+input#amount { width:64px; }
+tr#categoryRow, tr#lookBehindRow { display:none; }
+#label, #categorySearch { width:250px; }
+div#categoryDD { width:250px; }
+
+#cashflowIncome, #cashflowVariableExpense, #cashflowFixedExpense, #cashflow {
+ font-size:12px; 
+}
+tr.odd { background-color:#e1edfb; }
+
+td.incomeName, td.expenseName { width:250px; }
+td.amount { text-align:right; width:100px; }
+td.amount a { color:blue; cursor:pointer; }
+
+td.totalLabel { font-weight:bold; width:250px; }
+td.totalAmount { text-align:right; width:100px; }

@@ -1,0 +1,57 @@
+<div id="addBudgetItemForm" style="display:none;">
+  <table class="monthlyBudgetEdit">
+    <tr>
+      <td class="label">Type:</td>
+      <td>
+        <select id="budgetItemType" name="budgetItemType">
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+     <td class="label">Label:</td>
+     <td>
+      <input type="text" id="label" value="">
+     </td>
+    </tr>
+    <tr>
+      <td class="label"><label for="autoCalculate">Auto Calculate:</label></td>
+      <td>
+       <input type="checkbox" id="autoCalculate">
+      </td>
+    </tr>
+    <tr id="amountRow">
+      <td class="label">Amount:</td>
+      <td>
+       <input type="text" id="amount" value="">
+      </td>
+    </tr>
+    <tr id="categoryRow">
+      <td class="label">Category:</td>
+      <td>
+        {% include 'search-ahead.twig' with {'name': 'category'} %}&nbsp;
+      </td>
+    </tr>
+    <tr id="lookBehindRow">
+      <td class="label">Look Behind:</td>
+      <td>
+        <select id="lookBehind">
+         <option value="3">3</option>
+         <option value="6">6</option>
+         <option value="12">12</option>
+         <option value="18">18</option>
+         <option value="24">24</option>
+         <option value="36">36</option>
+        </select> months
+      </td>
+    </tr>
+    <tr>
+      <td class="label"></td>
+      <td>
+       <input id="budgetItemId" type="hidden" value="">
+       <input id="addBudgetItemBtn" type="button" value="Add Item">
+      </td>
+    </tr>
+  </table>
+</div>
