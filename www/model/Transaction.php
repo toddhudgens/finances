@@ -118,18 +118,21 @@ class Transaction {
     $total = abs($_REQUEST['total']);
     if ($_REQUEST['tax'] == "") { $tax = 0; } else { $tax = $_REQUEST['tax']; }
 
+    $fromAccountId = $_REQUEST['fromAccount'];
+    $fromAccount = $accounts[$fromAccountId];
+    $toAccountId = $_REQUEST['toAccount'];
+    $toAccount = $accounts[$toAccountId];
+
     // new transfer
     if ($_REQUEST['mode'] == "new") {
-      $fromAccountId = Entity::getAccountIdFromEntityId($_REQUEST['fromAccount']);
       $withdrawTxId = Transaction::insertNew($fromAccountId,
-					     $_REQUEST['toAccount'], ($total*-1), $tax, 'Transfer');
+					     $toAccount['entityId'], ($total*-1), $tax, 'Transfer');
 
       Transaction::updateCategories($withdrawTxId, $exists=0, $withdrawal=1);
       Transaction::updateTags($withdrawTxId);
 
-      $toAccountId = Entity::getAccountIdFromEntityId($_REQUEST['toAccount']);
       $depositTxId = Transaction::insertNew($toAccountId,
-					    $_REQUEST['fromAccount'], $total, $tax, 'Transfer');
+					    $fromAccount['entityId'], $total, $tax, 'Transfer');
       Transaction::updateCategories($depositTxId, $exists=0, $withdrawal=0);
       Transaction::updateTags($depositTxId);
       Transaction::updatePairedTransaction($depositTxId, $withdrawTxId);
@@ -142,8 +145,7 @@ class Transaction {
 
     // edit transfer transaction
     else if ($_REQUEST['mode'] == "edit") {
-      $entityId = $accounts[$_REQUEST['accountId']]['entityId'];
-      if ($entityId == $_REQUEST['fromAccount']) { $transferType = "withdrawal"; }
+      if ($_REQUEST['accountId'] == $_REQUEST['fromAccount']) { $transferType = "withdrawal"; }
       else { $transferType = "deposit"; }
 
       $pairedTransactionId = Transaction::getPairedTransaction($_REQUEST['transactionId']);
@@ -154,8 +156,8 @@ class Transaction {
         // if there is no paired transaction, this is a withdrawal turned into a transfer
         if (($pairedTransactionId == 0) && ($_REQUEST['transactionType'] == "Transfer")) {
           $pairedTransactionId =
-            Transaction::insertNew($_REQUEST['toAccount'],
-                                   $_REQUEST['fromAccount'],
+            Transaction::insertNew($toAccountId,
+                                   $fromAccount['entityId'],
                                    $_REQUEST['total'],
                                    $_REQUEST['tax'],
                                    'Transfer');
@@ -168,11 +170,9 @@ class Transaction {
 
       $withdrawalAmt = (abs($_REQUEST['total']) * -1);
       $depositAmount = abs($_REQUEST['total']);
-      $fromAccountId = Entity::getAccountIdFromEntityId($_REQUEST['fromAccount']);
-      $toAccountId = Entity::getAccountIdFromEntityId($_REQUEST['toAccount']);
 
       Transaction::update($transactionId, $fromAccountId,
-			  $_REQUEST['toAccount'],
+			  $toAccount['entityId'],
 			  $withdrawalAmt, '', 'Transfer');
       Transaction::updateCategories($transactionId, $exists=1, $withdrawal=1);
       Transaction::updateTags($transactionId);
@@ -180,7 +180,7 @@ class Transaction {
       if ($pairedTransactionId > 0) {
         if ($transferType == "withdrawal") { $transactionId = $pairedTransactionId; }
         else { $transactionId = $_REQUEST['transactionId']; }
-	Transaction::update($transactionId, $toAccountId, $_REQUEST['fromAccount'],
+	Transaction::update($transactionId, $toAccountId, $fromAccount['entityId'],
                             $depositAmount, '', 'Transfer');
 	Transaction::updateCategories($transactionId, $exists=1, $withdrawal=0);
 	Transaction::updateTags($transactionId);
@@ -280,6 +280,7 @@ class Transaction {
         t.id,
         a.id as accountId,
         ae.name as accountName,
+        ea.id as destinationAccountId,
         DATE_FORMAT(t.date, "%Y-%m-%d") as date,
         DATEDIFF(CURRENT_TIMESTAMP, t.date) as daysOld,
         IF (DATE_FORMAT(t.date, "%Y")=
@@ -309,6 +310,7 @@ class Transaction {
       LEFT JOIN accounts a ON t.accountId=a.id
       LEFT JOIN entities ae ON a.entityId=ae.id
       LEFT JOIN entities e ON t.entityId=e.id
+      LEFT JOIN accounts ea ON e.id=ea.entityId
       LEFT JOIN transactionCategory tc ON t.id=tc.transactionId
       LEFT JOIN categories c ON tc.categoryId=c.id
       LEFT JOIN tagMapping tm ON t.id=tm.transactionId

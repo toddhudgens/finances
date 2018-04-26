@@ -119,17 +119,10 @@ function editT(id) {
 
   updateTxType();
   if (data.type == "Transfer") {
-    //$('tr#payeeRow').hide();
-    //$('tr#fromAccountRow').show();
     $('#fromAccount').val(data.fromAccount);
     $('#toAccount').val(data.toAccount);
-    //$('tr#toAccountRow').show();
-    //$('#categoryRow').hide();
   }
-  else { 
-    //$('tr#fromAccountRow').hide();
-    //$('tr#toAccountRow').hide();
-    //$('tr#payeeRow').show();
+  else {
     $('input#payeeSearch').val(data.pName);
     $('input#payeeId').val(data.p);
     $('tr#categoryRow').show();
@@ -317,7 +310,7 @@ function updateTxType() {
 
   if (txType == "Transfer") { 
     $('tr#fromAccountRow').show();
-    $('#fromAccount').val($('#entityId').val());
+    $('#fromAccount').val($('#accountId').val());
     $('tr#toAccountRow').show();
     updateInterestVisibility();
   }

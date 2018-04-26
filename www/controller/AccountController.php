@@ -70,9 +70,7 @@ function showTransactions() {
   else { $month = ''; }
 
   $transactions = Transaction::getForShow();
-  //echo '<pre>' . print_r($transactions, true) . '</pre><br><br>';
   $entityIdToAccountIdMap = Account::getEntityIdMap();
-  //print_r($entityIdToAccountIdMap); die();
 
   if (count($transactions)) { 
     for ($j = 0; $j < count($transactions); $j++) { 
@@ -142,17 +140,12 @@ function showTransactions() {
   
       if ($row['transactionType'] == "Transfer") { 
         if ($row['amount'] < 0) { 
-          if (isset($accountInfo['entityId'])) { 
-            $hiddenVars['fromAccount']= $accountInfo['entityId']; 
-          } 
-          else { $hiddenVars['fromAccount'] = $row['accountId']; }
           $hiddenVars['fromAccount'] = $row['accountId'];
-	  $hiddenVars['toAccount'] = $row['entityId'];
+	  $hiddenVars['toAccount'] = $row['destinationAccountId'];
         }
         else { 
-          if (isset($accountInfo['entityId'])) { $hiddenVars['toAccount'] = $accountInfo['entityId']; }
-          else { $hiddenVars['toAccount'] = $row['accountId']; }
-	  $hiddenVars['fromAccount'] = $row['entityId'];
+          $hiddenVars['toAccount'] = $row['accountId'];
+	  $hiddenVars['fromAccount'] = $row['destinationAccountId'];
         }
 	$transactions[$j]['transferAccountId'] = $entityIdToAccountIdMap[$row['entityId']];
       }

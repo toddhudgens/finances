@@ -113,7 +113,7 @@ class Account {
     $accounts = array();
     try {
       $dbh = dbHandle(1);
-      $q = 'SELECT e.id,e.name FROM entities e, accounts a
+      $q = 'SELECT a.id,e.name FROM entities e, accounts a
             WHERE a.entityId=e.id AND a.active=1
             ORDER BY e.name';
       $results = $dbh->query($q);
