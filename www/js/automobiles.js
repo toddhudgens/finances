@@ -90,9 +90,11 @@ $(document).ready(function() {
 
 function getCategoriesById() {
   var categoriesById = {};
-  for (var i = 0; i < window.categories.length; i++) {	
-    var cat = window.categories[i];
-    categoriesById[cat.id] = cat.name;
+  if (window.categories !== undefined) {
+    for (var i = 0; i < window.categories.length; i++) {	
+      var cat = window.categories[i];
+      categoriesById[cat.id] = cat.name;
+    }
   }
   return categoriesById;
 }
