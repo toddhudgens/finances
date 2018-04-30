@@ -46,7 +46,7 @@ class Tag {
     $q = 'SELECT t.id, t.name FROM tags t WHERE t.name LIKE ? '.
          'ORDER BY t.name LIMIT 6';
     $stmt = $dbh->prepare($q);
-    $stmt->execute(array($searchText.'%'));
+    $stmt->execute(array('%'.$searchText.'%'));
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$results) { return array("no results"); }
     foreach ($results as $row) { 
