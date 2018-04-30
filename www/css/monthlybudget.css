@@ -24,6 +24,9 @@ div#categoryDD { width:250px; }
 #cashflowIncome, #cashflowVariableExpense, #cashflowFixedExpense, #cashflow {
  font-size:12px; 
 }
+
+table#cashflow { font-size:16px; }
+
 tr.odd { background-color:#e1edfb; }
 
 td.incomeName, td.expenseName { width:250px; }
@@ -32,3 +35,16 @@ td.amount a { color:blue; cursor:pointer; }
 
 td.totalLabel { font-weight:bold; width:250px; }
 td.totalAmount { text-align:right; width:100px; }
+
+td#leftSide {
+ width:500px;
+}
+td#rightSide {
+ vertical-align:top;
+ width:650px;
+}
+div#cashflowChart { 
+ margin:0 auto;
+ height:500px;
+ width:500px;
+}

@@ -2,16 +2,16 @@
 
 
 function index() {
-  $income = MonthlyBudget::getIncome();
+  $incomeItems = MonthlyBudget::getIncome();
   $fixedExpenses = MonthlyBudget::getFixedExpenses();
   $variableExpenses = MonthlyBudget::getVariableExpenses();
 
-  $combinedItems = array_merge($income, $fixedExpenses, $variableExpenses);
+  $combinedItems = array_merge($incomeItems, $fixedExpenses, $variableExpenses);
   $itemsById = array();
   foreach ($combinedItems as $id => $info) { $itemsById[$info['id']] = $info; }
 
   $viewParams = array('pageTitle' => "Monthly Budget",
-                      'income' => $income,
+                      'income' => $incomeItems,
                       'fixedExpenses' => $fixedExpenses,
                       'variableExpenses' => $variableExpenses, 
                       'items' => $itemsById);

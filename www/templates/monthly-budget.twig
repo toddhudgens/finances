@@ -4,6 +4,8 @@
 <a href="javascript:showNewBudgetItem()" id="addBudgetItem"><img style="vertical-align:middle" src="/images/add.png">&nbsp; Add Budget Item</a><br>
 <br>
 {% include 'add-budget-item.twig' %}
+<table>
+<tr><td id="leftSide">
 {% if income|length > 0 %}
 {% set incomeTotal = 0 %}
 <b>Income</b>
@@ -86,3 +88,22 @@
   <td class="totalAmount">${{ netCashflow|number_format(2) }}</td>
  </tr>
 </table>
+</td>
+<td id="rightSide"><div id="cashflowChart">
+</td></tr></table>
+</div>
+<script type="text/javascript">
+$(function () {
+  var data = [{ data: [[0,{{ incomeTotal|raw }}]] },
+              { data: [[1,{{ expenseTotal|raw }}]] }];
+  var options = {
+    series: { stack: 0,
+              lines: { show: false, steps: false },
+              bars: { show:true, barWidth: 0.9, align: 'center' }
+    },
+    yaxis: { tickLength:0 },
+    xaxis: { tickLength:0, ticks: [[0, 'Income'], [1, 'Expenses']]}
+  };
+  $.plot($("#cashflowChart"), data, options);
+});
+</script>

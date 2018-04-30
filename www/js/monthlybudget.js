@@ -15,7 +15,6 @@ $(document).ready(function() {
 
   
   $('#addBudgetItemBtn').click(function(event) {
-    console.log(event);
     var budgetItemId = $('#budgetItemId').val();
     if (budgetItemId === undefined) { budgetItemId = ''; }
     var budgetItemType = $('#budgetItemType').val();
@@ -35,7 +34,6 @@ $(document).ready(function() {
      'categoryId=' + categoryId + '&' +
      'autoCalculate='+ autoCalculate + '&' +
      'lookBehind='+lookBehind;
-    console.log(url+params);
     jQuery.ajax({
       url: url + params,
       success: function(data) {
@@ -72,8 +70,6 @@ function showNewBudgetItem() {
 
 function editBudgetItem(id) {
  var item = window.items[id];
-  console.log(item);
-
  $('#budgetItemId').val(id)
  $('#label').val(item.name);
  $('#budgetItemType').val(item.type);
@@ -82,7 +78,7 @@ function editBudgetItem(id) {
  $('#categoryId').val(item.variableAmountCategoryId);
  $('#categorySearch').val(item.categoryName);
 
- if (item.variableAmount) {
+ if (item.variableAmount == "1") {
   $('#autoCalculate').prop('checked', true);
   $('#amount').prop("disabled", true);
   $('#categoryRow').show();

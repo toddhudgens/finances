@@ -5,7 +5,7 @@ class MonthlyBudget {
   public static function addItem() {
     try {
       $dbh = dbHandle(1);
-      $q = 'INSERT INTO monthlyCashflow VALUES '.
+      $q = 'INSERT INTO monthlyBudgetItem VALUES '.
            '(0, :name,:type,:amount,:variableAmount,:variableCategory,:lookBehind)';
       $stmt = $dbh->prepare($q);
       $stmt->bindParam(':name', $_GET['label']);
@@ -32,7 +32,7 @@ class MonthlyBudget {
   public static function updateItem() {
     try { 
       $dbh = dbHandle();
-      $q = 'UPDATE monthlyCashflow SET '.
+      $q = 'UPDATE monthlyBudgetItem SET '.
              'name=:name,'.
              'type=:type,'.
              'amount=:amount,'.
@@ -64,36 +64,46 @@ class MonthlyBudget {
   public static function getIncome() {
     $dbh = dbHandle(1);
     $q = 'SELECT mcc.*, c.name as categoryName
-          FROM monthlyCashflow mcc 
+          FROM monthlyBudgetItem mcc 
           LEFT JOIN categories c ON mcc.variableAmountCategoryId=c.id
           WHERE mcc.type="Income"';
     $results = $dbh->query($q);
-    $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-    return $rows;
+    //print_r($results);
+    if ($results) { 
+      $rows = $results->fetchAll(PDO::FETCH_ASSOC);
+      return $rows;
+    }
+    else { return array(); }
   }
 
   public static function getFixedExpenses() {
     $dbh = dbHandle(1);
     $q = 'SELECT mcc.*, c.name as categoryName
-          FROM monthlyCashflow mcc
+          FROM monthlyBudgetItem mcc
           LEFT JOIN categories c ON mcc.variableAmountCategoryId=c.id
           WHERE mcc.type="Expense" AND mcc.amount>0 AND mcc.variableAmount=0
           ORDER BY mcc.amount DESC';
     $results = $dbh->query($q);
-    $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-    return $rows;
+    if ($results) { 
+      $rows = $results->fetchAll(PDO::FETCH_ASSOC);
+      return $rows;
+    }
+    else { return array(); }
   }
 
   public static function getVariableExpenses() {
     $dbh = dbHandle();
     $q = 'SELECT mcc.*, c.name as categoryName
-          FROM monthlyCashflow mcc
+          FROM monthlyBudgetItem mcc
           LEFT JOIN categories c ON mcc.variableAmountCategoryId=c.id
           WHERE mcc.type="Expense" AND mcc.amount>0 AND mcc.variableAmount=1
           ORDER BY mcc.amount DESC';
     $results = $dbh->query($q);
-    $rows = $results->fetchAll(PDO::FETCH_ASSOC);
-    return $rows;
+    if ($results) { 
+      $rows = $results->fetchAll(PDO::FETCH_ASSOC);
+      return $rows;
+    }
+    else { return array(); }
   }
 
 
@@ -112,7 +122,7 @@ class MonthlyBudget {
     $monthlyAmt = round($row['amt'] / $lookBehind, 2);
 
     // update the amount value
-    $q2 = 'UPDATE monthlyCashflow SET amount=:amount WHERE id=:id';
+    $q2 = 'UPDATE monthlyBudgetItem SET amount=:amount WHERE id=:id';
     $stmt = $dbh->prepare($q2);
     $stmt->bindParam(':amount', $monthlyAmt);
     $stmt->bindParam(':id', $id);
