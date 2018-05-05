@@ -224,7 +224,8 @@ class Transaction {
           LEFT JOIN transactionCategory tc ON t.id=tc.transactionId 
           LEFT JOIN categories c ON tc.categoryId=c.id
           WHERE t.notes LIKE ? 
-          GROUP BY t.id';
+          GROUP BY t.id 
+          ORDER BY t.date';
     $queryParams[] = '%'.$s.'%';
     if (count($entityIds)) {
       $q .= ' OR e.id IN (' . str_pad('', count($entityIds)*2-1, '?,') . ')';
