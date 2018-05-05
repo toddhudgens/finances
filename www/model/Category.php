@@ -93,6 +93,20 @@ function getSubmittedCategories() {
 }
 
 
+public static function buildLink($cNames, $cIds, $timefilter) {
+  $categories = explode(",", $cNames);
+  $categoryIds = explode(",", $cIds);
+  $link = '';
+  for ($c = 0; $c < count($categories); $c++) {
+    if ($c > 0) { $link .= ', '; }
+    $link .= '<a href="/account/show-transactions?categoryId='.$categoryIds[$c].$timefilter.'">' .
+              trim($categories[$c]).'</a>';
+  }
+  return $link;
+}
+
+
+
 }
 
 ?>

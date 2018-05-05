@@ -164,16 +164,8 @@ function showTransactions() {
           $row['shares'] . ' @ $' . $row['sharePrice'];
       }
       else { 
-        $categories = explode(",", $row['category']);
-        $categoryIds = explode(",", $row['categoryId']);
-        $categoryLink = '';
-        for ($c = 0; $c < count($categories); $c++) {
-          if ($c > 0) { $categoryLink .= ', '; }
-          else {}
-          $categoryLink .= '<a href="?categoryId='.$categoryIds[$c].$timefilter.'">' . 
-                             trim($categories[$c]).'</a>';
-        }
-        $transactions[$j]['categoryLink'] = $categoryLink; 
+	$link = Category::buildLink($row['category'], $row['categoryId'], $timefilter);
+        $transactions[$j]['categoryLink'] = $link;
       }
     }
   }

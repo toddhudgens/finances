@@ -10,6 +10,7 @@
  <th class="tDate">Date</th>
  <th class="tAccount">Account</th>
  <th class="tPayee">Payee</th>
+ <th class="tCat">Category</th>
  <th class="tWit">Amount</th>
  <th>Type</th>
  <th class="tNotes">Notes</th>
@@ -23,6 +24,7 @@
     {{ row.entityName }}
   </a>
  </td>
+ <td>{{ row.categoryLink|raw }}</td>
  <td class="transactionWithdrawal">{{ row.amount }}</td>
  <td>{{ row.transactionType }}</td>
  <td class="transactionNotes">{{ row.notes }}</td>

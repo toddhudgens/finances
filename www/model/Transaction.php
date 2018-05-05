@@ -211,11 +211,20 @@ class Transaction {
     foreach ($results as $row) { $entityIds[] = $row['id']; }
 
     // finding transactions with matching notes or matching entities
-    $q = 'SELECT t.*,e.name as entityName,ae.name as accountName FROM transactions t 
+    $q = 'SELECT t.*,
+            e.name as entityName,
+            ae.name as accountName,
+            GROUP_CONCAT(c.name) as category,
+            GROUP_CONCAT(c.id) as categoryId,
+            GROUP_CONCAT(tc.amount) as categoryAmounts
+          FROM transactions t 
           LEFT JOIN entities e ON t.entityId=e.id
           LEFT JOIN accounts a ON t.accountId=a.id
           LEFT JOIN entities ae ON a.entityId=ae.id
-          WHERE t.notes LIKE ?';
+          LEFT JOIN transactionCategory tc ON t.id=tc.transactionId 
+          LEFT JOIN categories c ON tc.categoryId=c.id
+          WHERE t.notes LIKE ? 
+          GROUP BY t.id';
     $queryParams[] = '%'.$s.'%';
     if (count($entityIds)) {
       $q .= ' OR e.id IN (' . str_pad('', count($entityIds)*2-1, '?,') . ')';
@@ -223,8 +232,14 @@ class Transaction {
     }
     $stmt = $dbh->prepare($q);
     $stmt->execute($queryParams);
-    $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $transactions;
+    $txs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   
+    foreach ($txs as $i => $tx) { 
+      $link = Category::buildLink($tx['category'], $tx['categoryId'], '');
+      $txs[$i]['categoryLink'] = $link;
+    }
+   
+    return $txs;
   }
 
 
