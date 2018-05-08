@@ -30,15 +30,11 @@ $(document).ready(function() {
 
 
 function updateInterestVisibility() {
-  var toAccount = $('#toAccount').val();
+  var aId = $('#toAccount').val();
   $('#interestRow').hide();
-  for (var aId in window.accounts) {     
-    if (toAccount == window.accounts[aId].entityId) {
-      if ((window.accounts[aId].accountType == 4) ||
-          (window.accounts[aId].accountType == 6)) {
-        $('#interestRow').show();
-      }
-    }
+  if ((window.accounts[aId].accountType == 4) ||
+      (window.accounts[aId].accountType == 6)) {
+    $('#interestRow').show();
   }
 }
 
