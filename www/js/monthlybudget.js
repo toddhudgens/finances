@@ -80,13 +80,15 @@ function editBudgetItem(id) {
 
  if (item.variableAmount == "1") {
   $('#autoCalculate').prop('checked', true);
-  $('#amount').prop("disabled", true);
+  $('#amountRow').hide();
   $('#categoryRow').show();
   $('#lookBehindRow').show();
  }
  else {
    $('#autoCalculate').prop('checked', false);
-   $('#amount').prop("disabled", false);
+   $('#amountRow').show();
+   $('#categoryRow').hide();
+   $('#lookBehindRow').hide();
  }
 
  $('#addBudgetItemBtn').val('Edit Item');
