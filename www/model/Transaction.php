@@ -202,13 +202,16 @@ class Transaction {
   public static function search($s) {
 
     $dbh = dbHandle(1);
+    echo $s;
 
     // get any matching entities
     $entityIds = array();
     $stmt = $dbh->prepare('SELECT * FROM entities e WHERE e.name LIKE ?');
-    $stmt->execute(array($s.'%'));
+    $stmt->execute(array('%'.$s.'%'));
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    print_r($results);
     foreach ($results as $row) { $entityIds[] = $row['id']; }
+    print_r($entityIds);
 
     // finding transactions with matching notes or matching entities
     $q = 'SELECT t.*,
@@ -223,14 +226,16 @@ class Transaction {
           LEFT JOIN entities ae ON a.entityId=ae.id
           LEFT JOIN transactionCategory tc ON t.id=tc.transactionId 
           LEFT JOIN categories c ON tc.categoryId=c.id
-          WHERE t.notes LIKE ? 
-          GROUP BY t.id 
-          ORDER BY t.date';
+          WHERE t.notes LIKE ? ';
+
     $queryParams[] = '%'.$s.'%';
     if (count($entityIds)) {
       $q .= ' OR e.id IN (' . str_pad('', count($entityIds)*2-1, '?,') . ')';
       foreach ($entityIds as $i => $entityId) { $queryParams[] = $entityId; }
     }
+
+    $q .= ' GROUP BY t.id ORDER BY t.date'; 
+
     $stmt = $dbh->prepare($q);
     $stmt->execute($queryParams);
     $txs = $stmt->fetchAll(PDO::FETCH_ASSOC);
