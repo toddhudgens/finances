@@ -5,6 +5,10 @@
 <a class="reportLink" href="/report/expenses-by-category?categoryId={{ categoryId }}&amp;range=all&amp;groupBy=year&amp;showAllTimePeriods=0" style="font-size:12px"><img src="/images/stats.png">&nbsp; Graph Transactions</a><br>
 {% endif %}
 
+{% if reportType == 'Entity' %}
+<a class="reportLink" href="/report/expenses-by-entity?entityId={{ entityId }}&amp;range=all&amp;groupBy=year&amp;showAllTimePeriods=0" style="font-size:12px"><img src="/images/stats.png">&nbsp; Graph Transactions</a><br>
+{% endif %}
+
 {% if showMtgCalcLink %}
 <a class="reportLink" href="/mortgage-calculator?id={{ accountId }}">
   <img src="/images/table.png">&nbsp;&nbsp;Mortgage Calculator

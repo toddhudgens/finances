@@ -43,7 +43,8 @@ function showTransactions() {
     $reportType = 'Category';
   }
   else if (isset($_GET['entityId'])) { 
-    $entityInfo = Entity::get($_GET['entityId']);
+    $entityId = $_GET['entityId'];
+    $entityInfo = Entity::get($entityId);
     $title = $entityInfo['name'];
     $reportType = 'Entity';
   }
