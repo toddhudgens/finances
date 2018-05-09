@@ -151,8 +151,6 @@ function showTransactions() {
 	$transactions[$j]['transferAccountId'] = $entityIdToAccountIdMap[$row['entityId']];
       }
 
-      $transactions[$j]['hiddenVars'] = $hiddenVars;
-
       // Build category link
       if ($row['transactionType'] == "Transfer") { 
         $categoryLink = 
@@ -163,11 +161,18 @@ function showTransactions() {
         $transactions[$j]['categoryLink'] = 'Stock ' . $row['stockTransactionType'];
         $transactions[$j]['payee'] = $row['ticker'] . ', ' . 
           $row['shares'] . ' @ $' . $row['sharePrice'];
+        $hiddenVars['type'] = 'Stock ' . $row['stockTransactionType']; 
+        $hiddenVars['shares'] = $row['shares'];
+        $hiddenVars['sharePrice'] = $row['sharePrice'];
+        $hiddenVars['ticker'] = $row['ticker'];
+        $hiddenVars['txFees'] = $row['txFees'];
       }
       else { 
 	$link = Category::buildLink($row['category'], $row['categoryId'], $timefilter);
         $transactions[$j]['categoryLink'] = $link;
       }
+
+      $transactions[$j]['hiddenVars'] = $hiddenVars;
     }
   }
 

@@ -105,6 +105,7 @@ function getCategoryName(id) {
 
 function editT(id) {
   var data = window.tdata[id];
+  
   $('select#transactionType').val(data.type);
   $('input#transactionNumber').val(data.num);
   $('input#date').val(data.date);
@@ -117,6 +118,12 @@ function editT(id) {
   if (data.type == "Transfer") {
     $('#fromAccount').val(data.fromAccount);
     $('#toAccount').val(data.toAccount);
+  }
+  else if ((data.type == "Stock Purchase") || (data.type == "Stock Sale")) {
+    $('#ticker').val(data.ticker);
+    $('#sharePrice').val(data.sharePrice);
+    $('#shares').val(data.shares);
+    $('#adminFees').val(data.txFees);
   }
   else {
     $('input#payeeSearch').val(data.pName);
@@ -133,8 +140,6 @@ function editT(id) {
   if (data.type != "Transfer") {
     if (data.cat === null || data.cat.indexOf(',') == -1) {  
       $('select.categorySelect').val('');
-      $('tr.categorySelectRow').hide();
-      $('tr#categoryRow').show();
       $('input#categorySearch').val(getCategoryName(data.cat));
       $('input#categoryId').val(data.cat);
       $('input.categoryAmount').val('');
@@ -291,6 +296,7 @@ function delT(id) {
 
 function updateTxType() {
   var txType = $('select#transactionType').val();
+  $('tr#categoryRow').hide();
   $('#taxRow').hide();
   $('tr#payeeRow').hide();
   $('tr#fromAccountRow').hide();

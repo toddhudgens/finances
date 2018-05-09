@@ -323,7 +323,8 @@ class Transaction {
         st.transactionType as stockTransactionType,
         st.ticker,
         st.qty as shares,
-        st.price as sharePrice
+        st.price as sharePrice,
+        st.fees as txFees
       FROM transactions t
       LEFT JOIN accounts a ON t.accountId=a.id
       LEFT JOIN entities ae ON a.entityId=ae.id
