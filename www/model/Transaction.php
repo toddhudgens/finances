@@ -202,16 +202,13 @@ class Transaction {
   public static function search($s) {
 
     $dbh = dbHandle(1);
-    echo $s;
 
     // get any matching entities
     $entityIds = array();
     $stmt = $dbh->prepare('SELECT * FROM entities e WHERE e.name LIKE ?');
     $stmt->execute(array('%'.$s.'%'));
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    print_r($results);
     foreach ($results as $row) { $entityIds[] = $row['id']; }
-    print_r($entityIds);
 
     // finding transactions with matching notes or matching entities
     $q = 'SELECT t.*,
