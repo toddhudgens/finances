@@ -10,24 +10,25 @@ table#transactionListing td {
 
 tr.odd { background-color:#e1edfb; } 
 
-.tDate { 
- text-align:left; 
+.tDate, .transactionDate { 
+ text-align:center;
  width:80px;
 }
 .tNum {
  text-align:center;
  width:50px;
 }
+.tAccount, .transactionAccount { text-align:left; width:250px; }
 .tPayee {
  text-align:left;
- width:300px;
+ width:150px;
 }
 .tCat {
  text-align:left;
  width:200px;
 }
-.tWit, .tDep, .tBal {
- padding-right:4px;
+.tWit, .tDep, .tBal, .transactionWithdrawal, .transactionDeposit {
+ padding-right:8px;
  text-align:right;
  width:80px;
 }
