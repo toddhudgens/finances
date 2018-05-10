@@ -63,7 +63,7 @@ function expensesByCategory() {
 
   if (isset($entityExpenses)) {
     $categoryName = Category::getName($categoryId);
-    $subtitle = $categoryName . ' Expenses By Entity';
+    $subtitle = $categoryName . ' Transactions By Entity';
   }
   else { $subtitle = ''; }
 
