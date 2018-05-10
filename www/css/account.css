@@ -116,3 +116,10 @@ width:266px;
 input#pricePerGallon { width:60px; }
 input#mileage { width:60px; }
 input#gallonsPumped { width:60px; }
+
+.ticker { padding-left:8px; text-align:left; width:100px; }
+.latestPrice, .avgPrice { padding-right:8px; text-align:right; width:100px; }
+.shares { padding-right:8px; text-align:right; width:100px; }
+.totalValue, .pl { padding-right:8px; text-align:right; width:120px; }
+.green { color:green; }
+.red { color:red; }
