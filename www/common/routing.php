@@ -44,37 +44,6 @@ function routeRequest() {
         return;
       }
     }
-
-    // if we don't have an exact match, look to see if we need to use a routing module
-    else { 
-      $slashPos = strpos($uri, "/", 1);
-      $firstWord = substr($uri, 0, $slashPos+1);
-      $restOfUri = substr($uri, $slashPos+1);
-      $words = explode("/", $restOfUri);
-      $modules = array("/album/" => "Album",
-                       "/picture/" => "Picture",
-                       "/tag/" => "Tag");
-      if (isset($modules[$firstWord])) { 
-        $controller = $modules[$firstWord];
-        if (is_numeric($words[0])) { $_GET['id'] = $words[0]; }
-      } 
-      if ($controller != "") { 
-        include 'controller/'.$controller.'Controller.php'; 
-        $applyView = 1;
-        $loginRequired = 0;
-        $action = "show";
-        if (count($words) > 2) {
-          $i = 2; 
-          while (isset($words[$i]) && isset($words[$i+1])) { 
-            $_GET[$words[$i]] = $words[$i+1]; 
-	    $i+=2;
-          }
-        }   
-      }
-      foreach ($_GET as $key => $value) {
-        if ($key != "path") { $queryString .= $key . '=' . $value . '&'; }
-      }
-    }
   }
   catch (PDOException $e) {
     die($e->getMessage());
