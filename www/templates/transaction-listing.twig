@@ -88,8 +88,8 @@
 {% endif %}
   {% if  showInterest == 0 %}
   <td>{{ info.categoryLink|raw }}</td>
-  <td class="tWit">{{ info.withdrawal|number_format(2) }}</td>
-  <td class="tDep">{{ info.deposit|number_format(2) }}</td>
+  <td class="tWit">{% if info.withdrawal != 0 %}{{ info.withdrawal|number_format(2) }}{% endif %}</td>
+  <td class="tDep">{% if info.deposit != 0 %}{{ info.deposit|number_format(2) }}{% endif %}</td>
   {% else %}
   <td class="tPmt">{{ info.deposit|number_format(2) }}</td>
   <td class="tPrin">{{ info.principal|number_format(2) }}</td>
