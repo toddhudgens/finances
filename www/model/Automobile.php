@@ -157,8 +157,8 @@ class Automobile extends AbstractPlugin {
 
     if ($rowCount > 0) {
       $q = 'REPLACE INTO gasMileage '.
-           '(assetId, transactionId, gasPrice, gasPumped, amount, mileage) '.
-	'VALUES(:assetId, :txId, :price, :gasPumped, :amt, :mileage)';
+           '(assetId, transactionId, gasPrice, date, gasPumped, amount, mileage) '.
+	'VALUES(:assetId, :txId, :price, :date, :gasPumped, :amt, :mileage)';
 
       for ($i = 1; $i <= $rowCount; $i++) {
         if ($_REQUEST['gasMileageVehicle'.$i] == '') { continue; }
@@ -169,6 +169,7 @@ class Automobile extends AbstractPlugin {
         $stmt->bindParam(':assetId', $_REQUEST['gasMileageVehicle'.$i]);
         $stmt->bindParam(':txId', $txId);
         $stmt->bindParam(':price', $_REQUEST['pricePerGallon'.$i]);
+        $stmt->bindParam(':date', $_REQUEST['date']);
         $stmt->bindParam(':gasPumped', $_REQUEST['gallonsPumped'.$i]);
         $stmt->bindParam(':amt', $amt);
         $stmt->bindParam(':mileage', $_REQUEST['gasMileageOdometer'.$i]);
