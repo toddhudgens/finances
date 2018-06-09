@@ -162,7 +162,7 @@ class Asset {
     if ($liquid == 1) { $where = ' AND a.liquid=1'; }
 
     $dbh = dbHandle(1);
-    $q = 'SELECT c.name as category,SUM(a.currentValue) as totalValue
+    $q = 'SELECT GROUP_CONCAT(a.id) as assetIds, c.name as category,SUM(a.currentValue) as totalValue
           FROM assets a, categories c
           WHERE a.sold=0 AND a.categoryId=c.id '. $where .'
           GROUP BY c.id
@@ -171,29 +171,36 @@ class Asset {
     if ($results) { 
       foreach ($results as $row) {
         $row['label'] = Category::buildLabel($row);
+        $row['assetIdArray'] = explode(',', $row['assetIds']);
         $assets[] = $row;
+        
       }
     }
 
     // add accounts to asset allocation. if it's tied to a asset we can 
     // update the balance by removing the debt value
-    $q = 'SELECT a.id, a.assetId, a.balance, e.name
+    $q = 'SELECT a.id, a.assetId, a.balance, e.name, SUM(sa.currentValue) as portfolioValue
           FROM accounts a 
           LEFT JOIN entities e ON a.entityId=e.id 
-          WHERE 1=1 ' . $where;
+          LEFT JOIN stockAssets sa ON a.id=sa.accountId
+          WHERE 1=1 ' . $where . ' GROUP BY a.id';
     $results = $dbh->query($q);
     foreach ($results as $row) { 
+        
       if ($row['assetId'] > 0) {
         foreach ($assets as $id => $assetInfo) {
-          if ($assetInfo['id'] == $row['assetId']) {
+          if (in_array($row['assetId'], $assetInfo['assetIdArray'])) { 
             $assets[$id]['totalValue'] += $row['balance'];
           }
         }
       }
-      else if ($row['balance'] > 0) {
+      else {
         $row['totalValue'] = $row['balance'];
+        if ($row['portfolioValue'] != NULL) { $row['totalValue'] += $row['portfolioValue']; }
         $row['label'] = $row['name'];
-        $assets[] = $row;
+        if ($row['totalValue'] > 0) { 
+          $assets[] = $row;
+        }
       }
     }
 
