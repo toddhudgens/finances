@@ -93,7 +93,7 @@ class Stocks extends AbstractPlugin {
       }
     }
 
-    Stocks::updatePrice($ticker);
+    //Stocks::updatePrice($ticker);
     $price = Stocks::getLatestPrice($ticker);
     $currentValue = $price * $updatedShareCount; 
    
