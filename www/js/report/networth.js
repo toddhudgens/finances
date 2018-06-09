@@ -17,7 +17,7 @@ function drawNetworthChart() {
   var from = $('#from').val();
   var fromTS = new Date(from).getTime();
   var to = $('#to').val();
-  var toTS = new Date(to).getTime();
+  var toTS = new Date(to+' 23:59:59').getTime();
 
 
   for (var i = 0; i < window.networthLog.length; i++) {
