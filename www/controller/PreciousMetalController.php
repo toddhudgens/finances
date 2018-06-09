@@ -34,7 +34,7 @@ function updatePrices() {
   $results = PreciousMetals::getAssets();
   foreach ($results as $row) { 
     $value = ($metalPrices[$row['metal']] * $row['weight'] * $row['purity'] * $row['quantity']) + 
-             ($row['premium'] * $row['quantity']);
+      (($row['premium'] * $row['weight']) * $row['quantity']);
     Asset::updateCurrentValue($row['assetId'], $value);
   }
 }

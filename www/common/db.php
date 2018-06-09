@@ -1,7 +1,11 @@
 <?php
 
 function dbHandle() {
-  return new PDO(getenv('PDOCONNSTR'), getenv('DBUN'), getenv('DBPW'));
+  if (isset($GLOBALS['dbh'])) { return $GLOBALS['dbh']; }
+  else { 
+    $GLOBALS['dbh'] = new PDO(getenv('PDOCONNSTR'), getenv('DBUN'), getenv('DBPW'));
+    return $GLOBALS['dbh'];
+  }
 }
 
 ?>
