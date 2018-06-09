@@ -14,14 +14,17 @@
 {% endif %}
 <tr>
  <th class="name">Name</th>
- <th class="value">Value</th>
+ <th class="purchasePrice">Purchase Price</th>
+ <th class="value">Current Value</th>
  <th class="madeIn">Made In</th>
  <th class="notes">Notes</th>
  <th class="actions">Actions</th>
 </tr>
+{% set purchasePriceTotal = 0 %}
 {% set assetTotal = 0 %}
 {% for i, assetInfo in categoryAssets %}
 {% set assetTotal = assetTotal + assetInfo.currentValue %}
+{% set purchasePriceTotal = purchasePriceTotal + assetInfo.initialValue %}
 {% set runningAssetTotal = runningAssetTotal + assetInfo.currentValue %}
 <tr class="{% if i is even %}odd{% endif %}">
  <td id="name{{ assetInfo.id }}" class="name">
@@ -34,6 +37,7 @@
   <input type="hidden" id="madeIn{{ assetInfo.id }}" value="{{ assetInfo.countryId }}">
   {{ assetInfo.name }}{% if assetInfo.nameExtra is defined %}{{ assetInfo.nameExtra|raw }}{% endif %}
  </td>
+ <td class="value">$ {{ assetInfo.initialValue|number_format(2) }}</td>
  <td class="value">$ {{ assetInfo.currentValue|number_format(2) }}</td>
  <td class="madeIn">{{ assetInfo.countryName }}</td>
  <td id="notes{{ assetInfo.id }}" class="notes">{{ assetInfo.notes }}</td>
@@ -43,7 +47,11 @@
  </td>
 </tr>
 {% endfor %}
-<tr><td></td><td class="value"><b>$ {{ assetTotal|number_format(2) }}</b></td></tr>
+<tr>
+ <td></td>
+ <td class="value"><b>$ {{ purchasePriceTotal|number_format(2) }}</b></td>
+ <td class="value"><b>$ {{ assetTotal|number_format(2) }}</b></td>
+</tr>
 </table>
 {% endif %}
 {% endfor %}
