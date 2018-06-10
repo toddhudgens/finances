@@ -25,14 +25,17 @@ Gas Mileage |
  <th>Miles Driven</th>
  <th>MPG</th>
 </tr>
+{% set totalCost = 0 %}
 {% for key, row in mileageInfo %}
+{% set cost = row.gasPrice * row.gasPumped %}
+{% set totalCost = totalCost + cost %}
 <tr class="{% if key is odd %}odd{% endif %}">
  <td class="date">{{ row.date }}</td>
  <td class="gasStation">{{ row.entityName }}</td>
  <td class="mileage">{{ row.mileage }}</td>
  <td class="gasPrice">${{ row.gasPrice }}</td>
  <td class="gasPumped">{{ row.gasPumped }}</td>
- <td class="cost">${{ row.amount|number_format(2) }}</td>
+ <td class="cost">${{ cost|number_format(2) }}</td>
  <td class="milesDriven">{{ row.milesDriven }}</td>
  <td class="mpg">{{ row.mpg }}</td>
 </tr>
@@ -42,7 +45,7 @@ Gas Mileage |
 <b>Total Miles Driven:</b> {{ totals.milesDriven }}<br>
 <b>Total Gas Pumped:</b> {{ totals.gasPumped|number_format(1) }} gal.<br>
 <b>Average MPG:</b> {{ totals.averageMPG }}<br>
-<b>Total Gas Expenses:</b> ${{ totals.totalSpent }}<br>
+<b>Total Gas Expenses:</b> ${{ totalCost|number_format(2) }}<br>
 <b>Cost per Mile:</b> {{ totals.costPerMile }} cents<br>
 <br><br><br><br>
 {% endif %}
