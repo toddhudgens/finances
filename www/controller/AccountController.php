@@ -199,7 +199,7 @@ function showTransactions() {
                       'transactions' => $transactions,
                       'transactionEditFields' => $transactionEditFields,
                       'transactionTypes' => $transactionTypes);
-  echo $GLOBALS['twig']->render('transaction-listing.twig', $viewParams);
+  Twig::render('transaction-listing.twig', $viewParams);
 }
 
 
@@ -213,7 +213,7 @@ function assets() {
   $viewParams = array('pageTitle' => $title,
                       'accountId' => $_GET['id'],
                       'assets' => $assets);
-  echo $GLOBALS['twig']->render('account-assets.twig', $viewParams);
+  Twig::render('account-assets.twig', $viewParams);
 }
 
 ?>

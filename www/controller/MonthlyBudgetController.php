@@ -15,7 +15,7 @@ function index() {
                       'fixedExpenses' => $fixedExpenses,
                       'variableExpenses' => $variableExpenses, 
                       'items' => $itemsById);
-  echo $GLOBALS['twig']->render('monthly-budget.twig', $viewParams);
+  Twig::render('monthly-budget.twig', $viewParams);
 }
 
 

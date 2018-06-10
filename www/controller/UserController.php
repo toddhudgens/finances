@@ -43,13 +43,13 @@ function index() {
                       'income' => $income,
                       'expenses' => $expenses,
                       'topCategories' => $topCategories);
-  echo $GLOBALS['twig']->render('user-homepage.twig', $viewParams);
+  Twig::render('user-homepage.twig', $viewParams);
 }
 
 
 function login() {
   if (!loggedIn()) { 
-    echo $GLOBALS['twig']->render('login-form.twig', array());
+    Twig::render('login-form.twig', array());
   }
   else { redirectToPage('/', 0); }
 }
@@ -62,12 +62,12 @@ function loginSubmit() {
     $_SESSION['valid'] = 1;
     $_SESSION['name'] = $_POST['username'];
     $_SESSION['userId'] = $result['id'];
-    echo $GLOBALS['twig']->render('login-success.twig', array());
+    Twig::render('login-success.twig', array());
     redirectToPage("/", 1);
   }
   else { 
     $_SESSION['valid'] = null;
-    echo $GLOBALS['twig']->render('login-failure.twig', array());
+    Twig::render('login-failure.twig', array());
     redirectToPage('/', 3);
   }
 }
@@ -76,7 +76,7 @@ function loginSubmit() {
 
 function logout() {
   session_destroy();
-  echo $GLOBALS['twig']->render('logout.twig', array());
+  Twig::render('logout.twig', array());
   redirectToPage('/', 2);
 }
 

@@ -49,11 +49,11 @@ function listAll() {
   Plugins::run('assetEditFields', array(&$assetEditFields));
   $countries = Country::getAll();
 
-  echo $GLOBALS['twig']->render('assets-listing.twig', 
-                                array('assets' => $assets,
-                                      'assetEditFields' => $assetEditFields,
-				      'categoryDetails' => $categories,
-                                      'countries' => $countries));
+  Twig::render('assets-listing.twig', 
+               array('assets' => $assets,
+                     'assetEditFields' => $assetEditFields,
+		     'categoryDetails' => $categories,
+                     'countries' => $countries));
 }
 
 

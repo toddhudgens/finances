@@ -16,7 +16,7 @@ function assetAllocation() {
   $viewParams = array('pageTitle' => "Asset Allocation",
 		      'totalValue' => number_format($totalValue, 2),
                       'assetJSON' => $assetJSON);
-  echo $GLOBALS['twig']->render('asset-allocation.twig', $viewParams);
+  Twig::render('asset-allocation.twig', $viewParams);
 }
 
 
@@ -38,7 +38,7 @@ function liquidAssetAllocation() {
   $viewParams = array('pageTitle' => "Liquid Asset Allocation",
                       'totalValue' => number_format($totalValue, 2),
                       'assetJSON' => $assetJSON);
-  echo $GLOBALS['twig']->render('liquid-asset-allocation.twig', $viewParams);
+  Twig::render('liquid-asset-allocation.twig', $viewParams);
 }
 
 
@@ -102,7 +102,7 @@ function expensesByCategory() {
                       'selectedCategory' => $categoryId,
                       'showAllTimePeriods' => $showAllTimePeriods, 
                       'categories' => Category::getAll());
-  echo $GLOBALS['twig']->render('expenses-by-category.twig', $viewParams);
+  Twig::render('expenses-by-category.twig', $viewParams);
 }
 
 
@@ -128,7 +128,7 @@ function expensesByEntity() {
                       'selectedEntity' => $entityId,
                       'showAllTimePeriods' => $showAllTimePeriods,
                       'entities' => Entity::getAll());
-  echo $GLOBALS['twig']->render('expenses-by-entity.twig', $viewParams);
+  Twig::render('expenses-by-entity.twig', $viewParams);
 }
 
 
@@ -153,7 +153,7 @@ function expensesByTag() {
                       'selectedTag' => $tagId,
                       'showAllTimePeriods' => $showAllTimePeriods, 
                       'tags' => Tag::getAll());
-  echo $GLOBALS['twig']->render('expenses-by-tag.twig', $viewParams);
+  Twig::render('expenses-by-tag.twig', $viewParams);
 }
 
 
@@ -177,7 +177,7 @@ function networth() {
 		      'to' => date('Y-m-d'),
 		      'from' => $from,
                       'networthLog' => $networthLog);
-  echo $GLOBALS['twig']->render('networth-report.twig', $viewParams);
+  Twig::render('networth-report.twig', $viewParams);
 }
 
 
@@ -198,7 +198,7 @@ function gasPrices() {
                       'to' => date('Y-m-d'),
                       'from' => $from,
                       'gasPriceData' => $gasPriceLog);
-  echo $GLOBALS['twig']->render('gas-price-report.twig', $viewParams);
+  Twig::render('gas-price-report.twig', $viewParams);
 }
 
 ?>

@@ -15,8 +15,7 @@ function search() {
   $viewParams = array('pageTitle' => "Transactions matching: ".$_GET['s'],
                       'searchString' => $_GET['s'],
                       'transactions' => $transactions);
-  echo $GLOBALS['twig']->render('transaction-search-results.twig', $viewParams);
-
+  Twig::render('transaction-search-results.twig', $viewParams);
 }
 
 
@@ -29,5 +28,6 @@ function save() {
   else {  $response = Transaction::save(); } // deposits & withdrawals
   echo json_encode($response);
 }
+
 
 ?>

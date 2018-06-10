@@ -34,8 +34,7 @@ function updateMaintenanceNotes() {
 function index() {
   $catId = Automobile::getCategoryId();
   $assets = Asset::getForCategory($catId);
-  echo $GLOBALS['twig']->render('automobile-overview.twig',
-				array('assets' => $assets));
+  Twig::render('automobile-overview.twig',array('assets' => $assets));
 }
 
 
@@ -73,13 +72,13 @@ function gasMileage() {
   }
   else { $totals['costPerMile'] = 0; }
 
-  echo $GLOBALS['twig']->render('automobile-mileage-log.twig',
-				array('id' => $_GET['id'],
-				      'automobiles' => Automobile::getAll(),
-				      'pageTitle' => $title,
-                                      'info' => $vehicleInfo,
-				      'mileageInfo' => $mileageInfo,
-				      'totals' => $totals));
+  Twig::render('automobile-mileage-log.twig',
+	       array('id' => $_GET['id'],
+		     'automobiles' => Automobile::getAll(),
+                     'pageTitle' => $title,
+                     'info' => $vehicleInfo,
+                     'mileageInfo' => $mileageInfo,
+                     'totals' => $totals));
 }
 
 
@@ -113,15 +112,14 @@ function maintenance() {
   } 
   $totals['milesLogged'] = ($highestOdo - $lowestOdo);
   $totals['costPerMile'] = ($totals['totalSpent'] / $totals['milesLogged']);
-  echo $GLOBALS['twig']->render($viewScript,
-                                array('id' => $_GET['id'],
-				      'view' => $view, 
-                                      'automobiles' => Automobile::getAll(),
-                                      'pageTitle' => $title,
-                                      'info' => $vehicleInfo,
-                                      'maintenanceLog' => $maintenanceLog,
-                                      'totals' => $totals));
-
+  Twig::render($viewScript,
+               array('id' => $_GET['id'],
+                     'view' => $view, 
+                     'automobiles' => Automobile::getAll(),
+                     'pageTitle' => $title,
+                     'info' => $vehicleInfo,
+                     'maintenanceLog' => $maintenanceLog,
+                     'totals' => $totals));
 }
 
 
@@ -152,13 +150,13 @@ function tco() {
     $label = ucwords($key) . ' ($'.$tco[$key].')';
     $chartData[] = array('label' => $label, 'data' => $tco[$key]);
   }
-  echo $GLOBALS['twig']->render('automobile-tco-report.twig',
-                                array('id' => $_GET['id'],
-                                      'automobiles' => Automobile::getAll(),
-                                      'pageTitle' => $title,
-				      'chartData' => $chartData,
-				      'tco' => $tco,
-                                      'totals' => $totals));
+  Twig::render('automobile-tco-report.twig',
+               array('id' => $_GET['id'],
+                     'automobiles' => Automobile::getAll(),
+                     'pageTitle' => $title,
+                     'chartData' => $chartData,
+                     'tco' => $tco,
+                     'totals' => $totals));
 }
 
 ?>

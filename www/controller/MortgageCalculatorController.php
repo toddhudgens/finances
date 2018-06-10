@@ -114,7 +114,7 @@ function index() {
                       'payoffDate' => $payoffDate, 
                       'extra' => $extra,
                       'loanData' => $loanData);
-  echo $GLOBALS['twig']->render('mortgage-calculator.twig', $viewParams);
+  Twig::render('mortgage-calculator.twig', $viewParams);
 }
 
 ?>
