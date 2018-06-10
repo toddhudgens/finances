@@ -27,6 +27,11 @@ require_once('common/util.php');
 require_once("common/pluginLoader.php");
 require 'controller/ErrorController.php';
 
+// initialize view variables 
+$GLOBALS['view'] = array();
+if (loggedIn()) { $GLOBALS['view']['loggedIn'] = 1; }
+else { $GLOBALS['view']['loggedIn'] = 0; }
+
 global $action, $applyView, $loginRequired;
 global $css, $js, $title;
 
