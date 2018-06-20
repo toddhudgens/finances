@@ -129,7 +129,10 @@ function expensesByEntity() {
     $entity = Entity::get($entityId);
     $subtitle = $entity['name'] . ' Transactions By Category';
   }
-  else { $subtitle = ''; }
+  else { 
+    $expensesByCategory = array(); 
+    $subtitle = ''; 
+  }
 
 
   $viewParams = array('pageTitle' => 'Expenses by Entity',
