@@ -120,6 +120,18 @@ function expensesByEntity() {
     $chartdata = Report::buildJSONDataForExpenseReport($expenses, $range, $groupBy);
   }
 
+  if (count($expenses) && ($entityId != '')) {
+    $expensesByCategory = Report::entityExpensesByCategory($entityId, $range);
+  }
+
+  if (isset($expensesByCategory)) {
+    //echo '<pre>'; print_r($expensesByCategory); echo '</pre>';
+    $entity = Entity::get($entityId);
+    $subtitle = $entity['name'] . ' Transactions By Category';
+  }
+  else { $subtitle = ''; }
+
+
   $viewParams = array('pageTitle' => 'Expenses by Entity',
                       'expenses' => $expenses,
                       'chartData' => $chartdata,
@@ -127,7 +139,9 @@ function expensesByEntity() {
                       'range' => $range,
                       'selectedEntity' => $entityId,
                       'showAllTimePeriods' => $showAllTimePeriods,
-                      'entities' => Entity::getAll());
+                      'entities' => Entity::getAll(),
+                      'subtitle' => $subtitle,
+                      'expensesByCategory' => $expensesByCategory);
   Twig::render('expenses-by-entity.twig', $viewParams);
 }
 

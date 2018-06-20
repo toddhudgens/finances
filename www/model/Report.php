@@ -139,4 +139,31 @@ class Report {
     }
     return $results;
   }
+
+
+  public static function entityExpensesByCategory($entityId, $range) {
+    $rangeCriteria = '';
+    if ($range == 'lastyear') { $rangeCriteria = ' AND YEAR(t.date)=YEAR(CURRENT_TIMESTAMP) '; }
+    else if ($range == 'lasttwoyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<2) '; }
+    else if ($range == 'lastthreeyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<3) '; }
+    else if ($range == 'all') {}
+
+    $dbh = dbHandle(1);
+    $q = "SELECT
+           c.id,
+           c.name as categoryName,
+           ABS(SUM(tc.amount)) as total,
+           GROUP_CONCAT(t.notes SEPARATOR '|') as notes
+          FROM transactions t, transactionCategory tc, entities e, categories c
+          WHERE
+           t.id=tc.transactionId AND
+           t.entityId IN (?) AND t.entityId=e.id AND tc.categoryId=c.id ".
+           $rangeCriteria . '
+          GROUP BY c.id
+          ORDER BY c.name';
+    $stmt = $dbh->prepare($q);
+    $stmt->execute(array($entityId));
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }
 }

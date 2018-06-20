@@ -34,3 +34,20 @@ window.chartData = {{ chartData|raw }}
 </table>
 {% endif %}
 <br><br>
+<h1>{{ subtitle }}</h1>
+<div id="expensesByCategoryChart"></div>
+<br><br>
+{% if expensesByCategory|length > 0 %}
+<table>
+ <tr>
+  <th class="categoryName">Category</th>
+  <th class="categoryTotal">Amount</th>
+ </tr>
+{% for key, row in expensesByCategory %}
+<tr>
+ <td class="categoryName">{{ row.categoryName }}</td>
+ <td class="categoryTotal">$ {{ row.total }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
