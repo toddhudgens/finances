@@ -146,18 +146,14 @@ class Automobile extends AbstractPlugin {
 
 
   public static function gasMileageTransactionSave($txId) {
-    $amt = -1;
     $rowCount = $_REQUEST['gasMileageRowCount'];
 
-    $dbh = dbHandle();
-    $q = 'DELETE FROM gasMileage WHERE transactionId=:txId';
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam(':txId', $txId);
-    $stmt->execute();
+    self::gasMileageTransactionDelete($txId);
 
     if ($rowCount > 0) {
+      $dbh = dbHandle();
       $q = 'REPLACE INTO gasMileage '.
-           '(assetId, transactionId, gasPrice, date, gasPumped, amount, mileage) '.
+           '(assetId,transactionId,gasPrice,date,gasPumped,amount,mileage) '.
 	'VALUES(:assetId, :txId, :price, :date, :gasPumped, :amt, :mileage)';
 
       for ($i = 1; $i <= $rowCount; $i++) {
@@ -181,17 +177,13 @@ class Automobile extends AbstractPlugin {
 
 
   public static function vehicleMaintenanceTransactionSave($txId) { 
-    $amt = -1;
     $rowCount = $_REQUEST['maintenanceRowCount'];
 
-    $dbh = dbHandle();
-    $q = 'DELETE FROM vehicleMaintenance WHERE transactionId=:txId';
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam(':txId', $txId);
-    $stmt->execute();
+    self::vehicleMaintenanceTransactionDelete($txId);
  
     if ($rowCount == 0) { return; }
     else { 
+      $dbh = dbHandle();
       $q = 'REPLACE INTO vehicleMaintenance '.
            '(assetId,transactionId,amount,datePerformed,mileage,notes) '.
            'VALUES(:assetId,:txId,:amt,:date,:mileage,:notes)';
@@ -212,16 +204,12 @@ class Automobile extends AbstractPlugin {
 
 
   public static function vehicleTaxTransactionSave($txId) {
-    $amt = -1;
     $rowCount = $_REQUEST['autoTaxRowCount'];
 
-    $dbh = dbHandle();
-    $q = 'DELETE FROM vehicleTax WHERE transactionId=:txId';
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam(':txId', $txId);
-    $stmt->execute();
+    self::vehicleTaxTransactionDelete($txId);
 
-    if ($rowCount > 0) { 
+    if ($rowCount > 0) {
+      $dbh = dbHandle();
       $q = 'REPLACE INTO vehicleTax (assetId,transactionId,amount) '.
            'VALUES(:assetId, :txId, :amt)';
 
@@ -238,16 +226,12 @@ class Automobile extends AbstractPlugin {
 
 
   public static function vehicleInsuranceTransactionSave($txId) { 
-    $amt = -1;
     $rowCount = $_REQUEST['autoInsuranceRowCount'];
 
-    $dbh = dbHandle();
-    $q = 'DELETE FROM vehicleInsurance WHERE transactionId=:txId';
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam(':txId', $txId);
-    $stmt->execute();
+    self::vehicleInsuranceTransactionDelete($txId);
 
     if ($rowCount > 0) {
+      $dbh = dbHandle();
       $q = 'REPLACE INTO vehicleInsurance (assetId,transactionId,amount) '.
            'VALUES(:assetId, :txId, :amt)';
 
@@ -264,23 +248,68 @@ class Automobile extends AbstractPlugin {
   }
 
 
+  public static function gasMileageTransactionDelete($txId) {
+    $dbh = dbHandle();
+    $q = 'DELETE FROM gasMileage WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+  }
+
+
+  public static function vehicleMaintenanceTransactionDelete($txId) {
+    $dbh = dbHandle();
+    $q = 'DELETE FROM vehicleMaintenance WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+  }
+
+
+  public static function vehicleTaxTransactionDelete($txId) {
+    $dbh = dbHandle();
+    $q = 'DELETE FROM vehicleTax WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+  }
+
+
+  public static function vehicleInsuranceTransactionDelete($txId) {
+    $dbh = dbHandle();
+    $q = 'DELETE FROM vehicleInsurance WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+  }
+
+
+
   public static function transactionCreate($transactionId) {
     self::transactionUpdate($transactionId);
   }
 
-  public static function transactionUpdate($transactionId) {
+  public static function transactionUpdate($txId) {
     if (isset($_REQUEST['gasMileageRowCount']) && ($_REQUEST['gasMileageRowCount'] > 0)) {
-      self::gasMileageTransactionSave($transactionId);
+      self::gasMileageTransactionSave($txId);
     }
     if (isset($_REQUEST['maintenanceRowCount']) && ($_REQUEST['maintenanceRowCount'] > 0)) {
-      self::vehicleMaintenanceTransactionSave($transactionId);
+      self::vehicleMaintenanceTransactionSave($txId);
     }
     if (isset($_REQUEST['autoTaxRowCount']) && ($_REQUEST['autoTaxRowCount'] > 0)) {
-      self::vehicleTaxTransactionSave($transactionId);
+      self::vehicleTaxTransactionSave($txId);
     }
     if (isset($_REQUEST['autoInsuranceRowCount']) && ($_REQUEST['autoInsuranceRowCount'] > 0)) {
-      self::vehicleInsuranceTransactionSave($transactionId);
+      self::vehicleInsuranceTransactionSave($txId);
     }
+  }
+
+
+  public static function transactionDelete($txId) {
+    self::gasMileageTransactionDelete($txId);
+    self::vehicleMaintenanceTransactionDelete($txId);
+    self::vehicleTaxTransactionDelete($txId);
+    self::vehicleInsuranceTransactionDelete($txId);
   }
 
 
