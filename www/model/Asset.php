@@ -167,13 +167,14 @@ class Asset {
           WHERE a.sold=0 AND a.categoryId=c.id '. $where .'
           GROUP BY c.id
            ORDER BY totalValue DESC';
-    $results = $dbh->query($q);
+    $stmt = $dbh->prepare($q);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($results) { 
       foreach ($results as $row) {
         $row['label'] = Category::buildLabel($row);
         $row['assetIdArray'] = explode(',', $row['assetIds']);
         $assets[] = $row;
-        
       }
     }
 
@@ -184,13 +185,17 @@ class Asset {
           LEFT JOIN entities e ON a.entityId=e.id 
           LEFT JOIN stockAssets sa ON a.id=sa.accountId
           WHERE 1=1 ' . $where . ' GROUP BY a.id';
-    $results = $dbh->query($q);
+    $stmt = $dbh->prepare($q);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($results as $row) { 
         
       if ($row['assetId'] > 0) {
         foreach ($assets as $id => $assetInfo) {
-          if (in_array($row['assetId'], $assetInfo['assetIdArray'])) { 
-            $assets[$id]['totalValue'] += $row['balance'];
+          if (isset($assetInfo['assetIdArray']) && is_array($assetInfo['assetIdArray'])) { 
+            if (in_array($row['assetId'], $assetInfo['assetIdArray'])) { 
+              $assets[$id]['totalValue'] += $row['balance'];
+            }
           }
         }
       }
