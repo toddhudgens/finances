@@ -292,7 +292,7 @@ class Automobile extends AbstractPlugin {
           FROM gasMileage gm
           LEFT JOIN transactions t ON gm.transactionId=t.id
           LEFT JOIN entities e ON t.entityId=e.id
-          WHERE gm.assetId=?
+          WHERE t.id IS NOT NULL AND gm.assetId=?
           ORDER BY date, t.id';
     $stmt = $dbh->prepare($q);
     $stmt->execute(array($id));
