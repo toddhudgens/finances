@@ -506,6 +506,11 @@ class Transaction {
       // update account balances
       Account::updateAccountBalance($row['accountId'], $row['date']);
 
+
+      // run the transactionUpdate() method on each plugin 
+      $fp = fopen('/tmp/todd', 'a+'); fwrite($fp, "Calling transactionDelete on plugins\n"); fclose($fp);
+      Plugins::run('transactionDelete', array($id));
+
       $response = array('success');
     }
     catch (PDOException $e) { $response = array('error', $e->getMessage()); }

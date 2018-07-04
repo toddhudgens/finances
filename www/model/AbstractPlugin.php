@@ -17,7 +17,7 @@ class AbstractPlugin {
   public static function transactionEditFields(&$html) {}
   public static function transactionCreate($transactionId) {}
   public static function transactionUpdate($transactionId) {}
-
+  public static function transactionDelete($transactionId) {}
 }
 
 ?>
