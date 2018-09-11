@@ -106,9 +106,10 @@ class Report {
 
   public static function categoryExpensesByEntity($categoryId, $range='') {
     $rangeCriteria = '';
-    if ($range == 'lastyear') { $rangeCriteria = ' AND YEAR(t.date)=YEAR(CURRENT_TIMESTAMP) '; }
+    if ($range == 'lastyear') { $rangeCriteria = ' AND YEAR(t.date)=(YEAR(CURRENT_TIMESTAMP)-1) '; }
     else if ($range == 'lasttwoyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<2) '; }
     else if ($range == 'lastthreeyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<3) '; }
+    else if ($range == 'currentyear') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)=YEAR(date)) '; }
     else if ($range == 'all') {}
 
     $dbh = dbHandle(1);
@@ -143,9 +144,10 @@ class Report {
 
   public static function entityExpensesByCategory($entityId, $range) {
     $rangeCriteria = '';
-    if ($range == 'lastyear') { $rangeCriteria = ' AND YEAR(t.date)=YEAR(CURRENT_TIMESTAMP) '; }
+    if ($range == 'lastyear') { $rangeCriteria = ' AND YEAR(t.date)=(YEAR(CURRENT_TIMESTAMP)-1) '; }
     else if ($range == 'lasttwoyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<2) '; }
     else if ($range == 'lastthreeyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<3) '; }
+    else if ($range == 'currentyear') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)=YEAR(date)) '; }
     else if ($range == 'all') {}
 
     $dbh = dbHandle(1);
