@@ -157,7 +157,7 @@ CREATE TABLE `gasMileage` (
   `entryId` int(8) NOT NULL AUTO_INCREMENT,
   `assetId` int(8) NOT NULL DEFAULT '0',
   `transactionId` int(12) NOT NULL DEFAULT '0',
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `gasPrice` double(7,3) DEFAULT NULL,
   `gasPumped` double(7,3) DEFAULT NULL,
   `amount` double(10,2) DEFAULT NULL,
@@ -234,7 +234,7 @@ DROP TABLE IF EXISTS `networth`;
 CREATE TABLE `networth` (
   `id` int(7) NOT NULL AUTO_INCREMENT,
   `value` double(10,2) DEFAULT NULL,
-  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -365,7 +365,7 @@ CREATE TABLE `stockAssets` (
   `avgPrice` double(10,2) DEFAULT NULL,
   `total` double(10,2) DEFAULT NULL,
   `currentValue` double(12,2) DEFAULT NULL,
-  `priceUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `priceUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ticker`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -380,7 +380,7 @@ DROP TABLE IF EXISTS `stockPrices`;
 CREATE TABLE `stockPrices` (
   `ticker` varchar(32) DEFAULT NULL,
   `price` double(10,2) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
