@@ -33,7 +33,7 @@ th.category, td.category {
 
 th.value, td.value { 
  padding-right:8px; 
- width:100px; 
+ width:120px; 
 }
 th.value { text-align:center; } 
 td.value { text-align:right; }
