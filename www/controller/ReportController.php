@@ -45,7 +45,11 @@ function liquidAssetAllocation() {
 
 function expensesByCategory() {
   $categoryId = ''; $range = ''; $groupBy = ''; 
-  if (isset($_GET['categoryId'])) { $categoryId = $_GET['categoryId']; } 
+
+  if (isset($_GET['categoryId'])) { 
+    $categoryId = $_GET['categoryId']; 
+    $categories = explode(',', $categoryId);
+  } 
   if (isset($_GET['range'])) { $range = $_GET['range']; } 
   if (isset($_GET['groupBy'])) { $groupBy = $_GET['groupBy']; } 
   if (isset($_REQUEST['showAllTimePeriods'])) { $showAllTimePeriods = 1; } else { $showAllTimePeriods = 0; }
@@ -100,6 +104,7 @@ function expensesByCategory() {
                       'grouping' => $groupBy,
                       'range' => $range,
                       'selectedCategory' => $categoryId,
+                      'selectedCategories' => $categories,
                       'showAllTimePeriods' => $showAllTimePeriods, 
                       'categories' => Category::getAll());
   Twig::render('expenses-by-category.twig', $viewParams);

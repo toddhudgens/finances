@@ -382,19 +382,22 @@ class Transaction {
     else if ($range == 'lastthreeyears') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)-YEAR(date)<4) '; }
     else if ($range == 'all') {}
 
+    $categories = explode(',', $categoryId);
+    $qMarks = str_repeat('?,', count($categories) - 1) . '?';
+
     $dbh = dbHandle(1);
     $q = "SELECT 
             DATE_FORMAT(t.date,'%Y-%m') as month,
             DATE_FORMAT(t.date,'%Y') as year, 
-            ABS(tc.amount) as total
+            tc.amount as total
           FROM transactions t, transactionCategory tc
           WHERE
              t.id=tc.transactionId AND
-             tc.categoryId IN (?) ".
+             tc.categoryId IN ($qMarks) ".
               $rangeCriteria . '
           ORDER BY t.date';
     $stmt = $dbh->prepare($q);
-    $stmt->execute(array($categoryId));
+    $stmt->execute($categories);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if ($results) { 
@@ -402,7 +405,15 @@ class Transaction {
         if (!isset($categoryTotals[$row[$groupBy]])) { $categoryTotals[$row[$groupBy]] = 0; }
         $categoryTotals[$row[$groupBy]] += $row['total'];
       }
-    }    
+    }
+
+    $allNegatives = true;
+    foreach ($categoryTotals as $grouping => $total) {
+      if ($total > 0) { $allNegatives = false; }
+    }
+    if ($allNegatives) { 
+      foreach ($categoryTotals as $grouping => $total) { $categoryTotals[$grouping] = abs($total); }
+    }
     return $categoryTotals; 
   }
 

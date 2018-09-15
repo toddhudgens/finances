@@ -2,6 +2,11 @@ div#assetAllocation { height:500px; width:1000px; }
 
 div#expenseByCategory, div#expensesByEntity { height:500px; width:1400px; }
 
+select#categoryId { 
+height:150px;
+vertical-align:middle;
+}
+
 #flotTip {
  background-color: #000;
  border-radius:4px;

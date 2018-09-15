@@ -112,6 +112,9 @@ class Report {
     else if ($range == 'currentyear') { $rangeCriteria = ' AND (YEAR(CURRENT_TIMESTAMP)=YEAR(date)) '; }
     else if ($range == 'all') {}
 
+    $categories = explode(',', $categoryId);
+    $qMarks = str_repeat('?,', count($categories) - 1) . '?';
+
     $dbh = dbHandle(1);
     $q = "SELECT
            e.id,
@@ -121,12 +124,13 @@ class Report {
           FROM transactions t, transactionCategory tc, entities e
           WHERE
            t.id=tc.transactionId AND
-           tc.categoryId IN (?) AND t.entityId=e.id".
+           tc.categoryId IN ($qMarks) AND t.entityId=e.id".
            $rangeCriteria . '
           GROUP BY e.id
           ORDER BY e.name';
+    //die($q);
     $stmt = $dbh->prepare($q);
-    $stmt->execute(array($categoryId));
+    $stmt->execute($categories);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // split notes
