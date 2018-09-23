@@ -60,6 +60,18 @@ class MonthlyBudget {
   }
 
 
+  public static function deleteItem($id) {
+    try { 
+      $dbh = dbHandle();
+      $q = 'DELETE FROM monthlyBudgetItem WHERE id=:id';
+      $stmt = $dbh->prepare($q);
+      $stmt->bindParam(':id', $id);
+      $stmt->execute();
+    }
+    catch (PDOException $ex) { die($e->getMessage()); }
+  }
+
+
 
   public static function getIncome() {
     $dbh = dbHandle(1);

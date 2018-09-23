@@ -31,4 +31,16 @@ function saveItem() {
 }
 
 
+function deleteItem() {
+  $response = array('success');
+
+  try {
+    if ($_GET['id'] != "") { MonthlyBudget::deleteItem($_GET['id']); }
+    else { $response = array('error'); }
+  }
+  catch (PDOException $e) { $response = array('error', $e->getMessage()); }
+  echo json_encode($response);
+}
+
+
 ?>

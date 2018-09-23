@@ -13,7 +13,6 @@ $(document).ready(function() {
     }
   }); 
 
-  
   $('#addBudgetItemBtn').click(function(event) {
     var budgetItemId = $('#budgetItemId').val();
     if (budgetItemId === undefined) { budgetItemId = ''; }
@@ -46,6 +45,12 @@ $(document).ready(function() {
       }
     });
   });
+
+
+  $('#deleteBudgetItemBtn').click(function(event) {
+    $('#deleteConfirm').show();
+  });
+
 });
 
 function showNewBudgetItem() {
@@ -60,10 +65,11 @@ function showNewBudgetItem() {
   $('#lookBehindRow').hide();
   $('#amountRow').show();
   $('#addBudgetItemBtn').val('Add Item');
+  $('#deleteBudgetItemBtn').hide();
 
   $('#addBudgetItemForm').dialog({ 
    title: 'Add Budget Item',
-   height:300,
+   height:350,
    width:400
   });
 }
@@ -77,6 +83,7 @@ function editBudgetItem(id) {
  $('#lookBehind').val(item.variableAmountLookBehind);
  $('#categoryId').val(item.variableAmountCategoryId);
  $('#categorySearch').val(item.categoryName);
+ $('#deleteBudgetItemBtn').show();
 
  if (item.variableAmount == "1") {
   $('#autoCalculate').prop('checked', true);
@@ -95,8 +102,19 @@ function editBudgetItem(id) {
 
  $('#addBudgetItemForm').dialog({
    title: 'Edit Budget Item',
-   height:300,
+   height:350,
    width:400
  });
 }
 
+
+function deleteBudgetItemConfirmed() {
+  var itemId = $('#budgetItemId').val();
+  var url = '/monthly-budget/delete-item?id=' + itemId;
+  window.location = url;  
+}
+
+
+function deleteBudgetItemCancelled() {
+  $('#deleteConfirm').hide();
+}

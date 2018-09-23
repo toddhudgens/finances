@@ -22,8 +22,8 @@ function search() {
 
 function save() {
   $txType = $_REQUEST['transactionType'];
-  if ($txType == "Stock Purchase") { $response = Stocks::purchase(); }
-  else if ($txType == "Stock Sale") { $response = Stocks::sale(); }
+  if ($txType == "Stock Purchase") { $response = Stocks::logTransaction($txType); }
+  else if ($txType == "Stock Sale") { $response = Stocks::logTransaction($txType); }
   else if ($txType == "Transfer") { $response = Transaction::saveTransfer(); }
   else {  $response = Transaction::save(); } // deposits & withdrawals
   echo json_encode($response);

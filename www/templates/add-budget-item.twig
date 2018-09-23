@@ -51,7 +51,9 @@
       <td class="label"></td>
       <td>
        <input id="budgetItemId" type="hidden" value="">
-       <input id="addBudgetItemBtn" type="button" value="Add Item">
+       <input id="addBudgetItemBtn" type="button" value="Add Item">&nbsp; &nbsp;
+       <input id="deleteBudgetItemBtn" type="button" value="Delete Item"><br><br>
+       <span id="deleteConfirm">are you sure? <a id="deleteConfirmed" onclick="deleteBudgetItemConfirmed()">[ yes ]</a>&nbsp; &nbsp;<a id="deleteCancelled" onclick="deleteBudgetItemCancelled()">[ no ]</a></span>
       </td>
     </tr>
   </table>

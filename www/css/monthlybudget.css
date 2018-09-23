@@ -48,3 +48,15 @@ div#cashflowChart {
  height:500px;
  width:500px;
 }
+
+#deleteConfirm {
+ display:none;
+ font-size:12px;
+}
+
+#deleteConfirmed, #deleteCancelled { 
+ cursor:pointer;
+ letter-spacing:0.5px;
+}
+#deleteConfirmed { color:green; }
+#deleteCancelled { color:red; }
