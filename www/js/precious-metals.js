@@ -10,50 +10,21 @@ $(document).ready(function() {
   });
 
   $('body').on("addAssetFormShown", function(event) {
-    $('.pmAssetInfo').hide();
-    $('.silverAssetInfo').hide();
-    $('#silverType').val('');
-    $('.goldAssetInfo').hide();
-    $('#goldType').val('');
-    $('#pmQty').val('1');
-    $('#pmAutoPricing').prop('checked', false);
+    hidePmRows();
   });
 
   $('body').on("editAssetFormShown", function (event) {
-    $('.silverAssetInfo').hide();
-    $('.goldAssetInfo').hide();
-    $('.pmAssetInfo').hide();
-
-    var categoryId = event.categoryId
-    var transactionId = event.transactionId;
-
-    if (categoryId == 61) {
+    updatePmRowVis(event.categoryId);
+    if ((event.categoryId == 61) || (event.categoryId == 128)) {
       populatePreciousMetalInfo(event.assetId);
-      $('.silverAssetInfo').show();
-      $('.pmAssetInfo').show();
-    }
-    else if (categoryId == 128) {
-      populatePreciousMetalInfo(event.assetId);
-      $('.goldAssetInfo').show();
-      $('.pmAssetInfo').show();
     }
   });
-
 
   $('body').on('assetCategoryUpdated', function (event) { 
-    if ((event.categoryId == 61)) { 
-      $('.silverAssetInfo').show();
-      $('.pmAssetInfo').show();
-    }
-    else if (event.categoryId == 128) { 
-      $('.goldAssetInfo').show();
-      $('.pmAssetInfo').show();
-    }
+    updatePmRowVis(event.categoryId);
   });
 
-
   $('body').on('saveAsset', function (event) {
-    console.log("inside saveAsset event");
     var category = $('#assetCategoryId').val();
     if (category == 61) { 
       window.ajaxParams += '&pmAutoPricing='+$('#pmAutoPricing').is(':checked');
@@ -65,9 +36,36 @@ $(document).ready(function() {
       window.ajaxParams += '&pmQty='+$('#pmQty').val();
       window.ajaxParams += '&pmType='+$('#goldType').val();
     }
-    console.log(window.ajaxParams);
   });
 });
+
+
+
+function hidePmRows() {
+    $('.silverAssetInfo').hide();
+    $('.goldAssetInfo').hide();
+    $('.pmAssetInfo').hide();
+    $('#silverType').val('');
+    $('#goldType').val('');
+    $('#pmQty').val('1');
+    $('#pmAutoPricing').prop('checked', false);
+}
+
+
+function updatePmRowVis(categoryId) {
+  if (categoryId == 61) {
+    $('.silverAssetInfo').show();
+    $('.pmAssetInfo').show();
+  }
+  else if (categoryId == 128) {
+    $('.goldAssetInfo').show();
+    $('.pmAssetInfo').show();
+  }
+  else {
+    hidePmRows();
+  }
+}
+
 
 function populatePreciousMetalInfo(assetId) {   
   var url = "/precious-metal-asset-info?id=" + assetId;
