@@ -31,9 +31,11 @@ $(document).ready(function() {
 
 function updateInterestVisibility() {
   var aId = $('#toAccount').val();
+  var aType = $('#transactionType').val();
   $('#interestRow').hide();
-  if ((window.accounts[aId].accountType == 4) ||
-      (window.accounts[aId].accountType == 6)) {
+  if ((aType == "Transfer") && 
+      ((window.accounts[aId].accountType == 4) ||
+      (window.accounts[aId].accountType == 6))) {
     $('#interestRow').show();
   }
 }
