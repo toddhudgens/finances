@@ -2,7 +2,7 @@
 {% include 'return-to-accounts-page.twig' %}
 <br>
 Category: 
-<select id="categoryId" class="categorySelect" name="categoryId" multiple"><option value=""></option>
+<select id="categoryId" class="categorySelect" name="categoryId" multiple><option value=""></option>
 {% for key,category in categories %}
 <option value="{{ category.id }}"{% if category.id in selectedCategories %} SELECTED{% endif %}>{{ category.name }}</option>{% endfor %}</select>
 <br><br>
