@@ -38,8 +38,12 @@ function showTransactions() {
   }
   else if (isset($_GET['categoryId'])) { 
     $categoryId = $_GET['categoryId'];
-    $categoryInfo = Category::get($_GET['categoryId']);
-    $title = $categoryInfo['name'];
+    if (strpos($categoryId, ",")) { $categoryIds = explode(",", $categoryId); }
+    else { $categoryIds = array($categoryId); }
+    $categoryInfo = Category::get($categoryIds);
+    $title = '';
+    foreach ($categoryInfo as $i => $info) { $title .= $info['name'] . ', '; }
+    $title = substr($title, 0, -2);
     $reportType = 'Category';
   }
   else if (isset($_GET['entityId'])) { 
@@ -109,7 +113,7 @@ function showTransactions() {
 	    $catIds = explode(",", $row['categoryId']);
             $amounts = explode(",", $row['categoryAmounts']);
 	    for ($i = 0; $i < count($catIds); $i++) {
-	      if ($catIds[$i] == $_GET['categoryId']) { 
+	      if (in_array($catIds[$i], $categoryIds)) {
 	        $withdrawal = money_format('%i', abs($amounts[$i]));
 	        $balance -= abs($amounts[$i]);
 	      }

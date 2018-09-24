@@ -3,13 +3,18 @@
 class Category { 
 
 
-public static function get($id) {
+public static function get($ids) {
+  if (!is_array($ids)) { $ids = array($ids); }
+
+  $qMarks = str_repeat('?,', count($ids) - 1) . '?';
+
   $dbh = dbHandle(1);
-  $q = 'SELECT id,name FROM categories WHERE id=? LIMIT 1';
+  $q = "SELECT id,name FROM categories WHERE id IN ($qMarks)";
   $stmt = $dbh->prepare($q);
-  $stmt->execute(array($id));
+  $stmt->execute($ids);
+
   $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  if ($results) { foreach ($results as $row) { return $row; }}
+  if ($results) { return $results; }
   else { return array(); }
 }
 

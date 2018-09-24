@@ -257,9 +257,9 @@ class Transaction {
     }
 
     if (isset($_GET['categoryId'])) {
-      $where .= 'tc2.categoryId=:categoryId AND ';
-      $bindParams[':categoryId'] = $_GET['categoryId'];
-      $joins = 'LEFT JOIN transactionCategory AS tc2 ON t.id=tc2.transactionId' ;
+      if (strpos($_GET['categoryId'], ",")) { $categoryIds = explode(",", $_GET['categoryId']); }
+      else { $categoryIds = array($_GET['categoryId']); }
+      $where = 'tc.categoryId IN (' . implode(',', $categoryIds) . ') AND ';
     }
 
     if (isset($_GET['entityId'])) {
@@ -340,7 +340,8 @@ class Transaction {
         $where . ' 1=1
       GROUP BY t.id 
       ORDER BY t.date,t.transactionNumber';
-    //print '<pre>'.$q.'</pre><br><br>';  // die();
+    //print '<pre>'.$q.'</pre><br><br>';  
+
     $stmt = $dbh->prepare($q);
     foreach ($bindParams as $key => &$value) { 
       $stmt->bindParam($key, $value, PDO::PARAM_STR);
