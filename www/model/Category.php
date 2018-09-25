@@ -28,6 +28,31 @@ public static function getAll() {
 }
 
 
+public static function getAllForListing() {
+  $categories = array();
+  $dbh = dbHandle(1);
+  $q = 'SELECT c.id,c.name,'.
+         'COUNT(tc.transactionId) as transactionCount '.
+       'FROM categories c '.
+       'LEFT JOIN transactionCategory tc ON c.id=tc.categoryId '.
+       'GROUP BY c.id ORDER BY c.name';
+  $results = $dbh->query($q);
+  $categories = $results->fetchAll(PDO::FETCH_ASSOC);
+  $assetsByCategory = Asset::getAllByCategory();
+
+  foreach ($categories as $i => $info) {
+    if (isset($assetsByCategory[$info['name']])) {
+      $categories[$i]['assetCount'] = count($assetsByCategory[$info['name']]);
+    }
+    else {
+      $categories[$i]['assetCount'] = 0;
+    }
+  }
+  return $categories;
+}
+
+
+
 public static function getName($id) {
   $dbh = dbHandle(1);
   $q = 'SELECT name FROM categories WHERE id=?';

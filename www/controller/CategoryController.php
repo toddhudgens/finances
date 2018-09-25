@@ -17,4 +17,11 @@ function search() {
 }
 
 
+function listAll() {
+  $categories = Category::getAllForListing();
+  $viewParams = array('categories' => $categories);
+  Twig::render('category-listing.twig', $viewParams);
+}
+
+
 ?>

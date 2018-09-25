@@ -1,0 +1,11 @@
+a.addNewCategory {
+ font-size:12px;
+ text-decoration:none;
+}
+
+td.actions a { cursor:pointer; display:none; }
+
+.name { text-align:left; width:350px; }
+.transactionCount, .assetCount { text-align:center; width:120px; }
+.transactionCount a, .assetCount a { text-decoration:none; }
+.actions { text-align:center; }

@@ -1,0 +1,29 @@
+<h1>Category Listing</h1>
+{% include 'return-to-accounts-page.twig' %}
+<a href="javascript:showNewCategoryForm()" class="addNewCategory">
+<img style="vertical-align:middle" src="/images/add.png">&nbsp; Add New Category</a>
+{% include 'add-category-dialog.twig' %}
+<br><br>
+<table class="categories">
+<tr>
+ <th class="name">Name</th>
+ <th class="transactionCount">Transactions</th>
+ <th class="assetCount">Assets</th>
+ <th class="actions">Actions</th>
+</tr>
+{% for id, info in categories %}
+<tr class="{% if id is even %}odd{% endif %}">
+<td class="name">{{ info.name }}</td>
+<td class="transactionCount"><a href="/account/show-transactions?categoryId={{ info.id}}">{{ info.transactionCount }}</a></td>
+<td class="assetCount">
+{% if info.assetCount %}
+<a href="/assets#{{ info.name}}">{{ info.assetCount }}</a>
+{% else %}0{% endif %}
+</td>
+<td class="actions" onmouseover="showCategoryActions({{ info.id }});" onmouseout="hideCategoryActions({{ info.id }});">
+ <a id="edit{{ info.id }}" title="Edit this category" onclick="showCategoryEditForm({{ info.id }});"><img src="/images/edit.png"></a>&nbsp;
+ <a id="delete{{ info.id }}" title="Delete this category" onclick="deleteCategory({{ info.id }});"><img src="/images/cross.png"></a>
+</td>
+</tr>
+{% endfor %}
+</table>

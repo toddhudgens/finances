@@ -7,7 +7,7 @@
 {% set runningAssetTotal = 0 %}
 {% for categoryName, categoryAssets in assets %}
 {% if categoryAssets|length > 0 %}
-<h3>{{ categoryName }}</h3>
+<h3><a class="categoryName" name="{{ categoryName }}">{{ categoryName }}</a></h3>
 <table class="assets">
 {% if categoryDetails[categoryName] is defined %}
 <tr><td colspan="5">{{ categoryDetails[categoryName]|raw }}</td></tr>
