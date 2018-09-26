@@ -9,3 +9,5 @@ td.actions a { cursor:pointer; display:none; }
 .transactionCount, .assetCount { text-align:center; width:120px; }
 .transactionCount a, .assetCount a { text-decoration:none; }
 .actions { text-align:center; }
+
+#deleteCategoryBtn, #deleteConfirm { display:none; }

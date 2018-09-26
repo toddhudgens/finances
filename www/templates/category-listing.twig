@@ -13,7 +13,7 @@
 </tr>
 {% for id, info in categories %}
 <tr class="{% if id is even %}odd{% endif %}">
-<td class="name">{{ info.name }}</td>
+<td class="name"><span id="categoryName{{ info.id }}">{{ info.name }}</span></td>
 <td class="transactionCount"><a href="/account/show-transactions?categoryId={{ info.id}}">{{ info.transactionCount }}</a></td>
 <td class="assetCount">
 {% if info.assetCount %}

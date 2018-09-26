@@ -98,6 +98,34 @@ public static function add($name) {
 }
 
 
+public static function update($id, $name) {
+  if ($name == '') { return -1; }
+
+  try {
+    $dbh = dbHandle(1);
+    $q = 'UPDATE categories SET name=:name WHERE id=:id';
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->execute();
+  }
+  catch (PDOException $e) {}
+}
+
+
+public static function delete($id) {
+  try {
+    $dbh = dbHandle(1);
+    $stmt = $dbh->prepare('DELETE FROM categories WHERE id=?');
+    $stmt->execute(array($id));
+    if ($stmt->rowCount()) { return array('success'); }
+    else { returnarray('error', 'nothing to delete'); }
+  }
+  catch (PDOException $e) { 
+    return array('error', $e->getMessage()); 
+  }
+}
+
+
 public static function buildLabel($row) {
   if (isset($row['subcategory']) && ($row['subcategory'] != "")) {
     return $row['category'] . ' - ' . $row['subcategory'];
