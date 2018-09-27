@@ -75,7 +75,7 @@ class Transaction {
     if ($_REQUEST['tax'] == "") { $tax = 0; } else { $tax = $_REQUEST['tax']; }
 
     $txType = $_REQUEST['transactionType'];
-    if ($txType == "Withdrawal") { $total = abs($_REQUEST['total'])*-1; } 
+    if (($txType == "Withdrawal") || ($txType == "Stock Purchase")){ $total = abs($_REQUEST['total'])*-1; } 
     else { $total = abs($_REQUEST['total']); }
 
     if (($_REQUEST['payee'] == "") && ($_REQUEST['payeeName'] != '')) {
@@ -507,11 +507,16 @@ class Transaction {
       $stmt->execute(array($id));
       $stmt = $dbh->prepare('DELETE FROM transactionCategory WHERE transactionId=?');
       $stmt->execute(array($id));
+      $stmt = $dbh->prepare('DELETE FROM tagMapping WHERE transactionId=?');
+      $stmt->execute(array($id));
+
 
       if ($row['pairedTransaction'] != "0") { 
 	$stmt = $dbh->prepare('DELETE FROM transactions WHERE id=?');
 	$stmt->execute(array($row['pairedTransaction']));
 	$stmt = $dbh->prepare('DELETE FROM transactionCategory WHERE transactionId=?');
+	$stmt->execute(array($row['pairedTransaction']));
+	$stmt = $dbh->prepare('DELETE FROM tagMapping WHERE transactionId=?');
 	$stmt->execute(array($row['pairedTransaction']));
       }
 

@@ -14,7 +14,7 @@ function showTransactions() {
 
   // load account/category/entity info
   $balance = 0; $reportType = ''; $nextTxNum = ''; $accountId = ''; 
-  $entityId = ''; $categoryId = ''; $showInterest = 0;
+  $entityId = ''; $categoryId = ''; $showInterest = 0; $tagId = '';
   $showMtgCalcLink = 0; $showStockAssetsLink = 0;
   $transactionTypes = array('Withdrawal', 'Deposit', 'Transfer');
   if (isset($_GET['id'])) { 
@@ -53,7 +53,8 @@ function showTransactions() {
     $reportType = 'Entity';
   }
   else if (isset($_GET['tagId'])) { 
-    $tagInfo = Tag::get($_GET['tagId']);
+    $tagId = $_GET['tagId'];
+    $tagInfo = Tag::get($tagId);
     $title = $tagInfo['name'];
     $reportType = 'Tag';
   }
@@ -196,6 +197,7 @@ function showTransactions() {
                       'accountId' => $accountId, 
                       'entityId' => $entityId,
                       'categoryId' => $categoryId,
+                      'tagId' => $tagId,
                       'showAccountName' => $showAccountName,
                       'showMtgCalcLink' => $showMtgCalcLink,
                       'showInterest' => $showInterest,

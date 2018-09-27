@@ -3,9 +3,11 @@
 
 class Stocks extends AbstractPlugin { 
 
-  public static function purchase() {
+
+  public static function logTransaction($txType) {
+
     $_REQUEST['payee'] = 0;
-    $_REQUEST['transactionType'] = "Withdrawal";
+    $_REQUEST['transactionType'] = $txType;
 
     if ($_REQUEST['adminFees'] == '') { $fees = 0; } else { $fees = $_REQUEST['adminFees']; }
 
@@ -13,11 +15,13 @@ class Stocks extends AbstractPlugin {
     $txId = $results['transactionId'];
 
     $q = 'REPLACE INTO stockTransactions VALUES('.
-      ':txId,:txType,:ticker,:qty,:price,:fees,:total)';
+      ':accountId, :txId,:txType,:ticker,:qty,:price,:fees,:total)';
 
-    $type = "Purchase";
+    if ($txType == "Stock Purchase") { $type = "Purchase"; } else { $type = "Sale"; }
+
     $dbh = dbHandle();
     $stmt = $dbh->prepare($q);
+    $stmt->bindParam('accountId', $_REQUEST['accountId']);
     $stmt->bindParam('txId', $txId);
     $stmt->bindParam('txType', $type);
     $stmt->bindParam('ticker', $_REQUEST['ticker']);
@@ -27,37 +31,14 @@ class Stocks extends AbstractPlugin {
     $stmt->bindParam('total', $_REQUEST['total']);
     $stmt->execute();
     if ($stmt->rowCount()) { 
-      Stocks::updateStockAssets("Purchase", $_REQUEST['accountId'], $_REQUEST['ticker'], 
+      Stocks::updateStockAssets($type, $_REQUEST['accountId'], $_REQUEST['ticker'], 
                                 $_REQUEST['shares'], $_REQUEST['sharePrice']);
+      self::recalculateStockQuantityAndValue($_REQUEST['accountId'], $_REQUEST['ticker']);
     }
     return array('result' => 'success');
   }
 
-  public static function sale() {
-    $_REQUEST['payee'] = 0;
-    $_REQUEST['transactionType'] = "Deposit";
 
-    $results = Transaction::save();
-
-    $txId = $results['transactionId'];
-    $q = 'REPLACE INTO stockTransactions VALUES('.
-      ':txId,:txType,:ticker,:qty,:price,:fees, :total)';
-
-    $type = "Sale";
-    $dbh = dbHandle();
-    $stmt = $dbh->prepare($q);
-    $stmt->bindParam('txId', $txId);
-    $stmt->bindParam('txType', $type);
-    $stmt->bindParam('ticker', $_REQUEST['ticker']);
-    $stmt->bindParam('qty', $_REQUEST['shares']);
-    $stmt->bindParam('price', $_REQUEST['sharePrice']);
-    $stmt->bindParam('fees', $_REQUEST['adminFees']);
-    $stmt->bindParam('total', $_REQUEST['total']);
-    $stmt->execute();
-    Stocks::updateStockAssets("Sale", $_REQUEST['accountId'], $_REQUEST['ticker'], 
-                              $_REQUEST['shares'], $_REQUEST['sharePrice']);
-    return array('result' => 'success');
-  }
 
 
   public static function updateStockAssets($type, $accountId, $ticker, $shares, $price) {
@@ -111,6 +92,16 @@ class Stocks extends AbstractPlugin {
   }
 
 
+  public static function getTxInfo($txId) { 
+    $dbh = dbHandle();
+    $q = 'SELECT * FROM stockTransactions WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }
+
 
   public static function getForAccount($accountId) {
     $dbh = dbHandle();
@@ -129,6 +120,47 @@ class Stocks extends AbstractPlugin {
     return $results;
   }
 
+  public static function recalculateStockQuantityAndValue($accountId, $ticker) { 
+    $dbh = dbHandle();
+    $q = 'SELECT transactionType,SUM(qty) as totalQty, SUM(total) as totalSpent '.
+         'FROM stockTransactions '.
+         'WHERE ticker=:ticker AND accountId=:accountId '.
+         'GROUP BY transactionType';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':accountId', $accountId);
+    $stmt->bindParam(':ticker', $ticker);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalShares = 0; $totalSpent = 0;
+    foreach ($results as $i => $row) { 
+      if ($row['transactionType'] == "Purchase") { 
+        $totalShares += $row['totalQty'];
+        $totalSpent += $row['totalSpent'];
+      }
+      else if ($row['transactionType'] == "Sale") { 
+        $totalShares -= $row['totalQty'];
+        $totalSpent -= $row['totalSpent'];
+      }
+    }
+
+    $price = Stocks::getLatestPrice($ticker);
+    $currentValue = $price * $totalShares;
+    $avgPrice = $totalSpent / $totalShares;
+
+    $q = 'UPDATE stockAssets SET qty=:qty, currentValue=:currentValue, avgPrice=:avgPrice, total=:total '.
+         'WHERE ticker=:ticker AND accountId=:accountId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':accountId', $accountId);
+    $stmt->bindParam(':ticker', $ticker);
+    $stmt->bindParam(':qty', $totalShares); 
+    $stmt->bindParam(':currentValue', $currentValue);
+    $stmt->bindParam(':avgPrice', $avgPrice);
+    $stmt->bindParam(':total', $totalSpent);
+    $stmt->execute();
+  }
+
+
   public static function updateAssetsWithTicker($ticker, $price) { 
     $dbh = dbHandle();
     $q = 'UPDATE stockAssets '.
@@ -145,13 +177,23 @@ class Stocks extends AbstractPlugin {
     self::transactionUpdate($transactionId);
   }
 
+
   public static function transactionUpdate($transactionId) {
   }
 
 
-  // https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=MSFT,FB,AAPL,WFIOX&apikey=KEY
-  // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=WFIOX&apikey=KEY
-  // https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=WFIOX&apikey=KEY
+  public static function transactionDelete($txId) {
+    $txInfo = self::getTxInfo($txId);
+
+    $dbh = dbHandle();
+    $q = 'DELETE FROM stockTransactions WHERE transactionId=:txId';
+    $stmt = $dbh->prepare($q);
+    $stmt->bindParam(':txId', $txId);
+    $stmt->execute();
+
+    self::recalculateStockQuantityAndValue($txInfo['accountId'], $txInfo['ticker']);
+  }
+
 
 
   public static function getLatestPrice($ticker, $returnAll = 0) { 
@@ -171,10 +213,6 @@ class Stocks extends AbstractPlugin {
 
   public static function updatePrice($ticker) {
     $priceInfo = Stocks::getLatestPrice($ticker, 1);
-
-    // TODO: figure out why this isnt working
-    //if (isset($priceInfo) && $priceInfo['daysAgo'] == 0) { return; }
-
     $apikey = getenv('ALPHA_VANTAGE_API_KEY');
     $url = 'https://www.alphavantage.co/query?'.
            'function=TIME_SERIES_DAILY_ADJUSTED'.

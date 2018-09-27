@@ -103,10 +103,11 @@ public static function update($id, $name) {
 
   try {
     $dbh = dbHandle(1);
-    $q = 'UPDATE categories SET name=:name WHERE id=:id';
+    $stmt = $dbh->prepare('UPDATE categories SET name=:name WHERE id=:id');
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':name', $name);
     $stmt->execute();
+    if ($stmt->rowCount()) { return 1; }
   }
   catch (PDOException $e) {}
 }

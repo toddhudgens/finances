@@ -21,6 +21,20 @@ class Entity {
   }
 
 
+  public static function getAllForListing() {
+    $entities = array();
+    $dbh = dbHandle(1);
+    $q = 'SELECT e.id,e.name,'.
+         'COUNT(t.id) as transactionCount '.
+       'FROM entities e '.
+       'LEFT JOIN transactions t ON t.entityId=e.id '.
+      'GROUP BY e.id ORDER BY e.name';
+    $results = $dbh->query($q);
+    $entities = $results->fetchAll(PDO::FETCH_ASSOC);
+    return $entities;
+  }
+
+
   public static function updateName($id, $name) { 
     $dbh = dbHandle(1);
     $stmt = $dbh->prepare('UPDATE entities SET name=:name WHERE id=:entityId');
@@ -46,6 +60,21 @@ class Entity {
     $stmt->execute();
     if ($stmt->rowCount()) { return $dbh->lastInsertId(); }
     else { return -1; }
+  }
+
+
+
+  public static function delete($id) {
+    try {
+      $dbh = dbHandle(1);
+      $stmt = $dbh->prepare('DELETE FROM entities WHERE id=?');
+      $stmt->execute(array($id));
+      if ($stmt->rowCount()) { return array('success'); }
+      else { returnarray('error', 'nothing to delete'); }
+    }
+    catch (PDOException $e) {
+      return array('error', $e->getMessage());
+    }
   }
 
 

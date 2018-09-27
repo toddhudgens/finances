@@ -1,0 +1,23 @@
+<h1>Entity Listing</h1>
+{% include 'return-to-accounts-page.twig' %}
+<a href="javascript:showNewEntityForm()" class="addNewEntity">
+<img style="vertical-align:middle" src="/images/add.png">&nbsp; Add New Entity</a>
+{% include 'add-entity-dialog.twig' %}
+<br><br>
+<table class="entities">
+<tr>
+ <th class="name">Name</th>
+ <th class="transactionCount">Transactions</th>
+ <th class="actions">Actions</th>
+</tr>
+{% for id, info in entities %}
+<tr class="{% if id is even %}odd{% endif %}">
+<td class="name"><span id="entityName{{ info.id }}">{{ info.name }}</span></td>
+<td class="transactionCount"><a href="/account/show-transactions?entityId={{ info.id}}">{{ info.transactionCount }}</a></td>
+<td class="actions" onmouseover="showEntityActions({{ info.id }});" onmouseout="hideEntityActions({{ info.id }});">
+ <a id="edit{{ info.id }}" title="Edit this entity" onclick="showEntityEditForm({{ info.id }});"><img src="/images/edit.png"></a>&nbsp;
+ <a id="delete{{ info.id }}" title="Delete this entity" onclick="deleteEntity({{ info.id }});"><img src="/images/cross.png"></a>
+</td>
+</tr>
+{% endfor %}
+</table>

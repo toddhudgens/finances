@@ -20,6 +20,20 @@ class Tag {
   }
 
 
+  public static function getAllForListing() {
+    $tags = array();
+    $dbh = dbHandle(1);
+    $q = 'SELECT t.id,t.name,'.
+         'COUNT(tm.tagId) as transactionCount '.
+       'FROM tags t '.
+       'LEFT JOIN tagMapping tm ON t.id=tm.tagId '.
+      'GROUP BY t.id ORDER BY t.name';
+    $results = $dbh->query($q);
+    $tags = $results->fetchAll(PDO::FETCH_ASSOC);
+    return $tags;
+  }
+
+
 
   public static function add($name) {
     $dbh = dbHandle(1);
@@ -36,6 +50,38 @@ class Tag {
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       if (isset($row['id'])) { return array($row['id']); }
       else { return array('error', $stmt->errorInfo()); }
+    }
+  }
+
+
+
+  public static function update($id, $name) {
+    $dbh = dbHandle(1);
+    $stmt = $dbh->prepare('UPDATE tags SET name=:name WHERE id=:id');
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    if ($stmt->errorCode() == 0) { return 1; } else { return 0; }
+  }
+
+
+
+  public static function delete($id) {
+    try {
+      $dbh = dbHandle(1);
+      $stmt = $dbh->prepare('DELETE FROM tags WHERE id=?');
+      $stmt->execute(array($id));
+      if ($stmt->rowCount()) { 
+	$q = 'DELETE FROM tagMapping WHERE tagId=?';
+	$stmtTwo = $dbh->prepare($q);
+	$stmtTwo->execute(array($id));
+
+        return array('success'); 
+      }
+      else { returnarray('error', 'nothing to delete'); }
+    }
+    catch (PDOException $e) {
+      return array('error', $e->getMessage());
     }
   }
 

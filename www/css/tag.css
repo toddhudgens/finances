@@ -1,0 +1,11 @@
+a.addNewTag {
+ font-size:12px;
+ text-decoration:none;
+}
+
+td.actions a { cursor:pointer; display:none; }
+
+.name { text-align:left; width:350px; }
+.transactionCount { text-align:center; width:120px; }
+.transactionCount a { text-decoration:none; }
+.actions { text-align:center; }

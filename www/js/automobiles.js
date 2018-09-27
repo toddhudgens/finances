@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     var txId = event.transactionId;
     for (var i = 0; i < cats.length; i++) {
-      if (cats[i] == "Auto Maintenance") { populateMaintenanceInfo(txId); }
+      if (cats[i] == "Auto Maintenance / Repair") { populateMaintenanceInfo(txId); }
       else if (cats[i] == "Auto Insurance") { populateAutoInsuranceInfo(txId); }
       else if (cats[i] == "Auto Registration") { populateAutoTaxInfo(txId); }
       else if (cats[i] == "Gasoline") { populateGasMileageInfo(txId); }
@@ -197,7 +197,7 @@ function populateMaintenanceInfo(transactionId) {
 
 
 function updateVehicleMaintenanceFormVisibility(cats) {
-  if ($.inArray("Auto Maintenance", cats) != -1) { $('#maintainenanceLogHeader').show(); }
+  if ($.inArray("Auto Maintenance / Repair", cats) != -1) { $('#maintainenanceLogHeader').show(); }
   else { $('tr.maintenance').hide(); }
 }
 

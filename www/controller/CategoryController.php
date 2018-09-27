@@ -28,7 +28,7 @@ function save() {
   $response = array('success');
 
   try {
-    if (is_int($_GET['id'])) {
+    if ($_GET['id'] != '') {
       if (!Category::update($_GET['id'], $_GET['name'])) {
         $response = array('error', 'no rows updated'); 
       }
