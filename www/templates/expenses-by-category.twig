@@ -60,6 +60,7 @@ window.chartData = {{ chartData|raw }}
 </tr>
 {% endfor %}
 </table>
+{{ entityExpenses|length }} entities
 <script type="text/javascript">
 window.expensesByEntityData = {{ (topExpenses|json_encode|raw) }};
 </script>
