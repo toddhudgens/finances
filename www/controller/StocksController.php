@@ -6,7 +6,7 @@ function updatePrices() {
   $dbh = dbHandle();
 
   // get all of the unique stocks we need to track
-  $q = 'SELECT distinct ticker FROM stockPrices';
+  $q = 'SELECT distinct ticker FROM stockAssets';
   $results = $dbh->query($q);
   $stockTickers = $results->fetchAll(PDO::FETCH_ASSOC);
   //print_r($stockTickers);
