@@ -1,5 +1,7 @@
 #fullScreenChart { width:700px; height:420px; }
 
+.timePeriods { color:blue; cursor:pointer; font-size:10px; }
+
 @media (min-width:1700px) { #fullScreenChart { width:1680px; height:800px; }}
 @media (min-width:1600px) and (max-width:1700px) { #fullScreenChart { width:1580px; height:800px; }}
 @media (min-width:1500px) and (max-width:1600px) { #fullScreenChart { width:1480px; height:800px; }}

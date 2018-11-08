@@ -1,10 +1,14 @@
 <h1>{{ pageTitle }}</h1>
 {% include 'return-to-accounts-page.twig' %}
 <br>
+<div class="timePeriods">
+<a id="thisYear" class="timePeriod">This Year</a> :: <a id="lastYear" class="timePeriod">Last Year</a> :: <a id="last3" class="timePeriod">Last 3 Years</a> :: <a id="last5" class="timePeriod">Last 5 Years</a> :: <a id="all" class="timePeriod">All</a></div>
+<br>
 From: <input id="from" class="dateInput" type="text" onchange="updateDateRangeFrom()" value="{{ from }}">&nbsp; &nbsp;
 To: <input id="to" class="dateInput" type="text" onchange="updateDateRangeTo()" value="{{ to }}">
 <br><br>
 <script type="text/javascript">
+window.startingDate = "{{ from }}";
 window.networthLog = {{(networthLog|json_encode|raw)}};
 </script>
 <div id="fullScreenChart"></div>
